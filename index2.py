@@ -11,6 +11,10 @@ import subprocess
 import logging
 from transcribe_anything import transcribe_anything
 from typing import Optional
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 # Set up logging
 logging.basicConfig(
@@ -30,17 +34,15 @@ logging.getLogger().addHandler(console)
 CONFIG_FILE = "config.json"
 config = {
     "history_path": None,
-    "webhook_url": "",
     "whisper_model": "base",  # Default to base model
     "whisper_device": "cpu",   # Default to CPU
     "wait_timer_minutes": 60   # Default to 60 minutes (1 hour)
 }
 
-# Global variables for timer control
-timer_active = False
-timer_thread = None
-timer_start_time = None
-timer_end_callback = None
+# Global variables for monitoring control
+monitoring_active = False
+monitoring_thread = None
+start_time = None
 
 
 def save_config():
@@ -175,22 +177,43 @@ def process_audio_file(file_path, status_callback):
         return None
 
 
-def start_wait_timer(duration_minutes, status_callback, end_callback):
-    """Start the wait timer"""
-    global timer_active, timer_thread, timer_start_time, timer_end_callback
+def stop_monitoring(status_callback):
+    """Stop the monitoring process"""
+    global monitoring_active
+    monitoring_active = False
+    status_callback("🛑 Monitoring stopped")
+    logging.debug("[Monitor] Monitoring stopped by user or timer")
+
+
+def wait_for_audio_video_upload_with_timeout(after_dt: datetime, timeout_minutes: int, callback, status_callback, reset_button):
+    """Wait for audio/video upload with a timeout"""
+    global monitoring_active, start_time
     
-    timer_active = True
-    timer_start_time = datetime.now()
-    timer_end_callback = end_callback
+    monitoring_active = True
+    start_time = datetime.now()
+    timeout_seconds = timeout_minutes * 60
     
-    def timer_worker():
-        global timer_active
-        total_seconds = duration_minutes * 60
+    logging.debug(f"[Monitor] Starting monitoring with {timeout_minutes} minute timeout")
+    logging.debug(f"[Monitor] Watching for uploads after {after_dt.isoformat()}")
+
+    def monitoring_worker():
+        global monitoring_active
+        start_monitor_time = time.time()
         
-        for remaining_seconds in range(total_seconds, 0, -1):
-            if not timer_active:
+        while monitoring_active:
+            current_time = time.time()
+            elapsed_seconds = current_time - start_monitor_time
+            
+            # Check if timeout has been reached
+            if elapsed_seconds >= timeout_seconds:
+                monitoring_active = False
+                status_callback("⏰ Time limit reached - monitoring stopped")
+                reset_button.config(state=tk.DISABLED)
+                logging.debug("[Monitor] Timeout reached, stopping monitoring")
                 return
             
+            # Calculate remaining time
+            remaining_seconds = int(timeout_seconds - elapsed_seconds)
             hours = remaining_seconds // 3600
             minutes = (remaining_seconds % 3600) // 60
             seconds = remaining_seconds % 60
@@ -200,78 +223,73 @@ def start_wait_timer(duration_minutes, status_callback, end_callback):
             else:
                 time_str = f"{minutes:02d}:{seconds:02d}"
             
-            status_callback(f"⏰ Waiting... {time_str} remaining")
-            time.sleep(1)
-        
-        if timer_active:
-            timer_active = False
-            status_callback("⏰ Timer finished!")
-            if timer_end_callback:
-                timer_end_callback()
-    
-    timer_thread = threading.Thread(target=timer_worker, daemon=True)
-    timer_thread.start()
+            status_callback(f"👀 Monitoring for uploads... {time_str} remaining")
+            
+            try:
+                with open(config["history_path"], 'r', encoding='utf-8') as f:
+                    content = f.read()
 
+                raw_entries = "[" + content.replace("}\n{", "},\n{") + "]"
+                history = json.loads(raw_entries)
 
-def reset_timer(status_callback):
-    """Reset the wait timer"""
-    global timer_active
-    timer_active = False
-    status_callback("🔄 Timer reset")
-    logging.debug("[Timer] Timer reset by user")
-
-
-def wait_for_audio_video_upload(after_dt: datetime, callback, status_callback):
-    logging.debug(f"[Monitor] Watching for uploads after {after_dt.isoformat()}")
-
-    while True:
-        try:
-            with open(config["history_path"], 'r', encoding='utf-8') as f:
-                content = f.read()
-
-            raw_entries = "[" + content.replace("}\n{", "},\n{") + "]"
-            history = json.loads(raw_entries)
-
-            for entry in reversed(history):
-                if "FilePath" in entry and "DateTime" in entry:
-                    entry_time = datetime.fromisoformat(entry["DateTime"].replace("Z", "+00:00"))
-                    if entry_time.tzinfo is None:
-                        entry_time = entry_time.replace(tzinfo=timezone.utc)
-                    if entry_time > after_dt:
-                        logging.debug(f"[Monitor] New file found: {entry['FileName']}")
-                        file_name = entry.get("FileName", "").lower()
-                        valid_ext = ['.mp3', '.mp4', '.wav', '.m4a', '.flac', '.ogg', '.webm', '.avi', '.mov', '.wmv']
-                        if any(file_name.endswith(ext) for ext in valid_ext):
-                            status_callback("🎬 Found audio/video file!")
-                            local_file_path = entry["FilePath"]
-                            if os.path.exists(local_file_path):
-                                # Process the file (extract audio then transcribe)
-                                transcription = process_audio_file(local_file_path, status_callback)
-                                if transcription:
-                                    drive_url = entry.get("URL", "")
-                                    callback(transcription, drive_url, local_file_path)
-                                    return
+                for entry in reversed(history):
+                    if not monitoring_active:  # Check if monitoring was stopped
+                        return
+                        
+                    if "FilePath" in entry and "DateTime" in entry:
+                        entry_time = datetime.fromisoformat(entry["DateTime"].replace("Z", "+00:00"))
+                        if entry_time.tzinfo is None:
+                            entry_time = entry_time.replace(tzinfo=timezone.utc)
+                        if entry_time > after_dt:
+                            logging.debug(f"[Monitor] New file found: {entry['FileName']}")
+                            file_name = entry.get("FileName", "").lower()
+                            valid_ext = ['.mp3', '.mp4', '.wav', '.m4a', '.flac', '.ogg', '.webm', '.avi', '.mov', '.wmv']
+                            if any(file_name.endswith(ext) for ext in valid_ext):
+                                monitoring_active = False  # Stop monitoring once we find a file
+                                status_callback("🎬 Found audio/video file!")
+                                reset_button.config(state=tk.DISABLED)
+                                
+                                local_file_path = entry["FilePath"]
+                                if os.path.exists(local_file_path):
+                                    # Process the file (extract audio then transcribe)
+                                    transcription = process_audio_file(local_file_path, status_callback)
+                                    if transcription:
+                                        drive_url = entry.get("URL", "")
+                                        callback(transcription, drive_url, local_file_path)
+                                        return
+                                    else:
+                                        status_callback("❌ File processing failed")
+                                        return
                                 else:
-                                    status_callback("❌ File processing failed")
+                                    status_callback(f"❌ File not found: {local_file_path}")
                                     return
                             else:
-                                status_callback(f"❌ File not found: {local_file_path}")
-                                return
-                        else:
-                            status_callback("⚠️ File is not an audio/video file")
-                            return
+                                # Found a file but it's not audio/video - ignore it and continue monitoring
+                                logging.debug(f"[Monitor] Ignoring non-audio/video file: {file_name}")
+                                continue
 
-        except Exception as e:
-            logging.error(f"[Monitor] Error reading history: {e}")
-            status_callback(f"⚠️ Error reading history: {str(e)}")
+            except Exception as e:
+                logging.error(f"[Monitor] Error reading history: {e}")
+                status_callback(f"⚠️ Error reading history: {str(e)}")
 
-        time.sleep(2)
+            time.sleep(2)  # Check every 2 seconds
+        
+        # If we exit the loop without finding a file, it means monitoring was stopped
+        if monitoring_active:  # This shouldn't happen, but just in case
+            monitoring_active = False
+            status_callback("🛑 Monitoring stopped")
+            reset_button.config(state=tk.DISABLED)
+    
+    # Start monitoring in a separate thread
+    global monitoring_thread
+    monitoring_thread = threading.Thread(target=monitoring_worker, daemon=True)
+    monitoring_thread.start()
 
 
 def send_to_webhook(notion_url, description, transcription, drive_url, local_file_path):
-    webhook_url = config.get("webhook_url", "").strip()
+    webhook_url = os.getenv("WEBHOOK_URL", "").strip()
     if not webhook_url:
-        logging.warning("[Webhook] No webhook URL configured.")
+        logging.warning("[Webhook] No webhook URL configured in .env file.")
         return
 
     logging.debug("[Webhook] Sending transcription data...")
@@ -302,40 +320,37 @@ def handle_submission(notion_entry, description_entry, status_label, reset_butto
         messagebox.showerror("Error", "No ShareX history.json selected.")
         return
 
-    if not config.get("webhook_url"):
-        messagebox.showerror("Error", "Webhook URL not set.")
+    webhook_url = os.getenv("WEBHOOK_URL", "").strip()
+    if not webhook_url:
+        messagebox.showerror("Error", "Webhook URL not set in .env file.")
         return
 
     submit_time = datetime.now(timezone.utc).astimezone()
+    wait_minutes = config.get("wait_timer_minutes", 60)
     
     def on_transcription_complete(transcription, drive_url, local_file_path):
-        # Reset timer when transcription is complete
-        reset_timer(lambda msg: None)
         send_to_webhook(notion_url, description, transcription, drive_url, local_file_path)
         status_label.config(text="✅ Transcription sent to webhook!")
         reset_button.config(state=tk.DISABLED)
 
     def status_update(message):
         status_label.config(text=message)
-        # Enable reset button when timer is running
-        if "⏰ Waiting..." in message:
+        # Enable reset button when monitoring is active
+        if "👀 Monitoring" in message:
             reset_button.config(state=tk.NORMAL)
-        elif "Timer reset" in message or "Timer finished" in message:
+        elif "stopped" in message or "completed" in message or "failed" in message or "Time limit reached" in message:
             reset_button.config(state=tk.DISABLED)
 
-    def on_timer_end():
-        status_update("⏳ Timer finished, monitoring for audio/video file...")
-        reset_button.config(state=tk.DISABLED)
-        threading.Thread(
-            target=wait_for_audio_video_upload,
-            args=(submit_time, on_transcription_complete, status_update),
-            daemon=True
-        ).start()
-
-    # Start the wait timer first
-    wait_minutes = config.get("wait_timer_minutes", 60)
-    status_update(f"⏰ Starting {wait_minutes} minute wait timer...")
-    start_wait_timer(wait_minutes, status_update, on_timer_end)
+    status_update(f"🚀 Starting monitoring with {wait_minutes} minute time limit...")
+    
+    # Start monitoring with timeout
+    wait_for_audio_video_upload_with_timeout(
+        submit_time, 
+        wait_minutes, 
+        on_transcription_complete, 
+        status_update,
+        reset_button
+    )
 
 
 def select_history_file(label, submit_button):
@@ -398,13 +413,8 @@ def create_gui():
     description_entry = tk.Entry(root, width=60)
     description_entry.pack(pady=5)
 
-    tk.Label(root, text="Webhook URL:").pack()
-    webhook_entry = tk.Entry(root, width=60)
-    webhook_entry.insert(0, config.get("webhook_url", ""))
-    webhook_entry.pack(pady=5)
-
     # Wait timer configuration
-    tk.Label(root, text="Wait Timer (minutes):").pack()
+    tk.Label(root, text="Time Limit (minutes):").pack()
     timer_entry = tk.Entry(root, width=60)
     timer_entry.insert(0, str(config.get("wait_timer_minutes", 60)))
     timer_entry.pack(pady=5)
@@ -427,11 +437,11 @@ def create_gui():
     file_label = tk.Label(root, text="No file selected", fg="gray")
     file_label.pack()
 
-    # Reset timer button
+    # Stop monitoring button
     reset_button = tk.Button(
         root,
-        text="Reset Timer",
-        command=lambda: reset_timer(lambda msg: status_label.config(text=msg)),
+        text="Stop Monitoring",
+        command=lambda: stop_monitoring(lambda msg: status_label.config(text=msg)),
         state=tk.DISABLED,
         bg="#FF5722",
         fg="white",
@@ -441,7 +451,7 @@ def create_gui():
 
     submit_button = tk.Button(
         root,
-        text="Submit & Start Timer",
+        text="Start Monitoring",
         command=lambda: handle_submission(notion_entry, description_entry, status_label, reset_button),
         state=tk.DISABLED,
         bg="#4CAF50",
@@ -458,16 +468,17 @@ def create_gui():
     select_button.pack(pady=5)
 
     # Bindings for updates
-    webhook_entry.bind("<FocusOut>", lambda e: [update_webhook_url(webhook_entry), update_submit_button_state(submit_button)])
+    # webhook_entry.bind("<FocusOut>", lambda e: [update_webhook_url(webhook_entry), update_submit_button_state(submit_button)])
     timer_entry.bind("<FocusOut>", lambda e: update_wait_timer(timer_entry))
     model_entry.bind("<FocusOut>", lambda e: update_whisper_model(model_entry))
     device_entry.bind("<FocusOut>", lambda e: update_whisper_device(device_entry))
 
     info_label = tk.Label(
         root,
-        text="This tool waits for the specified time, then monitors ShareX history for\n"
-             "new audio/video files, transcribes them locally using Whisper,\n"
-             "and sends the transcription to your webhook.\n\n"
+        text="This tool monitors ShareX history for new audio/video files\n"
+             "for a specified time limit. Once the time limit is reached,\n"
+             "monitoring stops automatically. When an audio/video file is found,\n"
+             "it transcribes it locally using Whisper and sends to your webhook.\n\n"
              "Note: First run will download the Whisper model (base is ~150MB).",
         fg="gray",
         font=("Arial", 8),
