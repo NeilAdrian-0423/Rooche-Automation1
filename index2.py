@@ -177,15 +177,35 @@ def process_audio_file(file_path, status_callback):
         return None
 
 
-def stop_monitoring(status_callback):
-    """Stop the monitoring process"""
+def stop_monitoring(status_callback, ui_elements):
+    """Stop the monitoring process and re-enable UI"""
     global monitoring_active
     monitoring_active = False
     status_callback("🛑 Monitoring stopped")
     logging.debug("[Monitor] Monitoring stopped by user or timer")
+    
+    # Re-enable UI elements
+    enable_ui_elements(ui_elements, True)
 
 
-def wait_for_audio_video_upload_with_timeout(after_dt: datetime, timeout_minutes: int, callback, status_callback, reset_button):
+def enable_ui_elements(ui_elements, enable=True):
+    """Enable or disable UI elements"""
+    state = tk.NORMAL if enable else tk.DISABLED
+    
+    # Enable/disable input fields and buttons
+    ui_elements['notion_entry'].config(state=state)
+    ui_elements['description_entry'].config(state=state)
+    ui_elements['timer_entry'].config(state=state)
+    ui_elements['model_entry'].config(state=state)
+    ui_elements['device_entry'].config(state=state)
+    ui_elements['submit_button'].config(state=state)
+    ui_elements['select_button'].config(state=state)
+    
+    # Stop monitoring button has opposite state
+    ui_elements['reset_button'].config(state=tk.DISABLED if enable else tk.NORMAL)
+
+
+def wait_for_audio_video_upload_with_timeout(after_dt: datetime, timeout_minutes: int, callback, status_callback, ui_elements):
     """Wait for audio/video upload with a timeout"""
     global monitoring_active, start_time
     
@@ -199,6 +219,7 @@ def wait_for_audio_video_upload_with_timeout(after_dt: datetime, timeout_minutes
     def monitoring_worker():
         global monitoring_active
         start_monitor_time = time.time()
+        last_display_time = 0  # Track last display update to avoid skipping seconds
         
         while monitoring_active:
             current_time = time.time()
@@ -208,22 +229,27 @@ def wait_for_audio_video_upload_with_timeout(after_dt: datetime, timeout_minutes
             if elapsed_seconds >= timeout_seconds:
                 monitoring_active = False
                 status_callback("⏰ Time limit reached - monitoring stopped")
-                reset_button.config(state=tk.DISABLED)
+                enable_ui_elements(ui_elements, True)
                 logging.debug("[Monitor] Timeout reached, stopping monitoring")
                 return
             
             # Calculate remaining time
             remaining_seconds = int(timeout_seconds - elapsed_seconds)
-            hours = remaining_seconds // 3600
-            minutes = (remaining_seconds % 3600) // 60
-            seconds = remaining_seconds % 60
             
-            if hours > 0:
-                time_str = f"{hours:02d}:{minutes:02d}:{seconds:02d}"
-            else:
-                time_str = f"{minutes:02d}:{seconds:02d}"
-            
-            status_callback(f"👀 Monitoring for uploads... {time_str} remaining")
+            # Only update display if the second has changed to avoid skipping
+            if int(current_time) != last_display_time:
+                last_display_time = int(current_time)
+                
+                hours = remaining_seconds // 3600
+                minutes = (remaining_seconds % 3600) // 60
+                seconds = remaining_seconds % 60
+                
+                if hours > 0:
+                    time_str = f"{hours:02d}:{minutes:02d}:{seconds:02d}"
+                else:
+                    time_str = f"{minutes:02d}:{seconds:02d}"
+                
+                status_callback(f"👀 Monitoring for uploads... {time_str} remaining")
             
             try:
                 with open(config["history_path"], 'r', encoding='utf-8') as f:
@@ -247,7 +273,6 @@ def wait_for_audio_video_upload_with_timeout(after_dt: datetime, timeout_minutes
                             if any(file_name.endswith(ext) for ext in valid_ext):
                                 monitoring_active = False  # Stop monitoring once we find a file
                                 status_callback("🎬 Found audio/video file!")
-                                reset_button.config(state=tk.DISABLED)
                                 
                                 local_file_path = entry["FilePath"]
                                 if os.path.exists(local_file_path):
@@ -256,12 +281,16 @@ def wait_for_audio_video_upload_with_timeout(after_dt: datetime, timeout_minutes
                                     if transcription:
                                         drive_url = entry.get("URL", "")
                                         callback(transcription, drive_url, local_file_path)
+                                        # Re-enable UI after successful completion
+                                        enable_ui_elements(ui_elements, True)
                                         return
                                     else:
                                         status_callback("❌ File processing failed")
+                                        enable_ui_elements(ui_elements, True)
                                         return
                                 else:
                                     status_callback(f"❌ File not found: {local_file_path}")
+                                    enable_ui_elements(ui_elements, True)
                                     return
                             else:
                                 # Found a file but it's not audio/video - ignore it and continue monitoring
@@ -272,13 +301,11 @@ def wait_for_audio_video_upload_with_timeout(after_dt: datetime, timeout_minutes
                 logging.error(f"[Monitor] Error reading history: {e}")
                 status_callback(f"⚠️ Error reading history: {str(e)}")
 
-            time.sleep(2)  # Check every 2 seconds
+            time.sleep(1)  # Check every 1 second for smoother timer display
         
         # If we exit the loop without finding a file, it means monitoring was stopped
-        if monitoring_active:  # This shouldn't happen, but just in case
-            monitoring_active = False
-            status_callback("🛑 Monitoring stopped")
-            reset_button.config(state=tk.DISABLED)
+        if not monitoring_active:
+            enable_ui_elements(ui_elements, True)
     
     # Start monitoring in a separate thread
     global monitoring_thread
@@ -308,9 +335,9 @@ def send_to_webhook(notion_url, description, transcription, drive_url, local_fil
         logging.error(f"[Webhook] Failed to send: {e}")
 
 
-def handle_submission(notion_entry, description_entry, status_label, reset_button):
-    notion_url = notion_entry.get().strip()
-    description = description_entry.get().strip()
+def handle_submission(ui_elements, status_label):
+    notion_url = ui_elements['notion_entry'].get().strip()
+    description = ui_elements['description_entry'].get().strip()
 
     if not notion_url or not description:
         messagebox.showerror("Error", "Please enter both Notion URL and description.")
@@ -325,21 +352,35 @@ def handle_submission(notion_entry, description_entry, status_label, reset_butto
         messagebox.showerror("Error", "Webhook URL not set in .env file.")
         return
 
+    # Get the current timer value from the UI field, not from config
+    try:
+        wait_minutes = int(ui_elements['timer_entry'].get().strip())
+        if wait_minutes <= 0:
+            messagebox.showerror("Error", "Time limit must be greater than 0 minutes.")
+            return
+        # Update config with the current value
+        config["wait_timer_minutes"] = wait_minutes
+        save_config()
+    except ValueError:
+        messagebox.showerror("Error", "Please enter a valid number for time limit.")
+        return
+
     submit_time = datetime.now(timezone.utc).astimezone()
-    wait_minutes = config.get("wait_timer_minutes", 60)
+    
+    # Also update other config values from UI fields
+    config["whisper_model"] = ui_elements['model_entry'].get().strip()
+    config["whisper_device"] = ui_elements['device_entry'].get().strip()
+    save_config()
+    
+    # Disable UI elements when monitoring starts
+    enable_ui_elements(ui_elements, False)
     
     def on_transcription_complete(transcription, drive_url, local_file_path):
         send_to_webhook(notion_url, description, transcription, drive_url, local_file_path)
         status_label.config(text="✅ Transcription sent to webhook!")
-        reset_button.config(state=tk.DISABLED)
 
     def status_update(message):
         status_label.config(text=message)
-        # Enable reset button when monitoring is active
-        if "👀 Monitoring" in message:
-            reset_button.config(state=tk.NORMAL)
-        elif "stopped" in message or "completed" in message or "failed" in message or "Time limit reached" in message:
-            reset_button.config(state=tk.DISABLED)
 
     status_update(f"🚀 Starting monitoring with {wait_minutes} minute time limit...")
     
@@ -349,7 +390,7 @@ def handle_submission(notion_entry, description_entry, status_label, reset_butto
         wait_minutes, 
         on_transcription_complete, 
         status_update,
-        reset_button
+        ui_elements
     )
 
 
@@ -392,7 +433,7 @@ def update_wait_timer(entry):
 
 
 def update_submit_button_state(submit_button):
-    if config.get("history_path") and config.get("webhook_url"):
+    if config.get("history_path") and os.getenv("WEBHOOK_URL", "").strip():
         submit_button.config(state=tk.NORMAL)
     else:
         submit_button.config(state=tk.DISABLED)
@@ -437,11 +478,13 @@ def create_gui():
     file_label = tk.Label(root, text="No file selected", fg="gray")
     file_label.pack()
 
+    # Create UI elements dictionary for easier management
+    ui_elements = {}
+
     # Stop monitoring button
     reset_button = tk.Button(
         root,
         text="Stop Monitoring",
-        command=lambda: stop_monitoring(lambda msg: status_label.config(text=msg)),
         state=tk.DISABLED,
         bg="#FF5722",
         fg="white",
@@ -452,7 +495,6 @@ def create_gui():
     submit_button = tk.Button(
         root,
         text="Start Monitoring",
-        command=lambda: handle_submission(notion_entry, description_entry, status_label, reset_button),
         state=tk.DISABLED,
         bg="#4CAF50",
         fg="white",
@@ -467,9 +509,29 @@ def create_gui():
     )
     select_button.pack(pady=5)
 
+    # Populate UI elements dictionary
+    ui_elements = {
+        'notion_entry': notion_entry,
+        'description_entry': description_entry,
+        'timer_entry': timer_entry,
+        'model_entry': model_entry,
+        'device_entry': device_entry,
+        'submit_button': submit_button,
+        'select_button': select_button,
+        'reset_button': reset_button
+    }
+
+    # Configure button commands with ui_elements
+    reset_button.config(
+        command=lambda: stop_monitoring(lambda msg: status_label.config(text=msg), ui_elements)
+    )
+    submit_button.config(
+        command=lambda: handle_submission(ui_elements, status_label)
+    )
+
     # Bindings for updates
-    # webhook_entry.bind("<FocusOut>", lambda e: [update_webhook_url(webhook_entry), update_submit_button_state(submit_button)])
     timer_entry.bind("<FocusOut>", lambda e: update_wait_timer(timer_entry))
+    timer_entry.bind("<KeyRelease>", lambda e: update_wait_timer(timer_entry))  # Update on key release too
     model_entry.bind("<FocusOut>", lambda e: update_whisper_model(model_entry))
     device_entry.bind("<FocusOut>", lambda e: update_whisper_device(device_entry))
 
