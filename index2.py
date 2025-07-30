@@ -2,9 +2,9 @@ import json
 import time
 import os
 import threading
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 import tkinter as tk
-from tkinter import messagebox, filedialog
+from tkinter import messagebox, filedialog, ttk
 import requests
 import tempfile
 import subprocess
@@ -175,6 +175,160 @@ def process_audio_file(file_path, status_callback):
         logging.error(f"[Process] Error processing audio file: {e}")
         status_callback(f"❌ Error processing file: {str(e)}")
         return None
+
+
+def get_recent_audio_video_files(hours_back=24):
+    """Get recent audio/video files from ShareX history"""
+    if not config.get("history_path") or not os.path.exists(config["history_path"]):
+        return []
+    
+    try:
+        with open(config["history_path"], 'r', encoding='utf-8') as f:
+            content = f.read()
+
+        raw_entries = "[" + content.replace("}\n{", "},\n{") + "]"
+        history = json.loads(raw_entries)
+        
+        # Filter for audio/video files from the last 24 hours
+        cutoff_time = datetime.now(timezone.utc) - timedelta(hours=hours_back)
+        audio_video_files = []
+        
+        valid_ext = ['.mp3', '.mp4', '.wav', '.m4a', '.flac', '.ogg', '.webm', '.avi', '.mov', '.wmv']
+        
+        for entry in reversed(history):  # Most recent first
+            if "FilePath" in entry and "DateTime" in entry and "FileName" in entry:
+                try:
+                    entry_time = datetime.fromisoformat(entry["DateTime"].replace("Z", "+00:00"))
+                    if entry_time.tzinfo is None:
+                        entry_time = entry_time.replace(tzinfo=timezone.utc)
+                    
+                    if entry_time > cutoff_time:
+                        file_name = entry.get("FileName", "").lower()
+                        if any(file_name.endswith(ext) for ext in valid_ext):
+                            # Format the datetime for display
+                            local_time = entry_time.astimezone()
+                            time_str = local_time.strftime("%Y-%m-%d %I:%M:%S %p")
+                            
+                            audio_video_files.append({
+                                'filename': entry.get("FileName", "Unknown"),
+                                'filepath': entry.get("FilePath", ""),
+                                'url': entry.get("URL", ""),
+                                'datetime': entry_time,
+                                'display_time': time_str,
+                                'display_text': f"{time_str} - {entry.get('FileName', 'Unknown')}"
+                            })
+                except Exception as e:
+                    logging.warning(f"[History] Error parsing entry: {e}")
+                    continue
+        
+        return audio_video_files[:20]  # Return max 20 most recent files
+        
+    except Exception as e:
+        logging.error(f"[History] Error reading history: {e}")
+        return []
+
+
+def refresh_file_list(listbox, refresh_button):
+    """Refresh the list of recent audio/video files"""
+    refresh_button.config(text="Refreshing...", state=tk.DISABLED)
+    
+    # Clear current list
+    listbox.delete(0, tk.END)
+    
+    # Get recent files
+    recent_files = get_recent_audio_video_files()
+    
+    if recent_files:
+        for file_info in recent_files:
+            listbox.insert(tk.END, file_info['display_text'])
+            # Store the full file info in the listbox for later retrieval
+            listbox.insert(tk.END, "---FILEINFO---")
+            listbox.delete(tk.END)  # Remove the marker, we just use it to store data
+        
+        # Store file info as listbox data
+        listbox.file_data = recent_files
+    else:
+        listbox.insert(tk.END, "No recent audio/video files found")
+        listbox.file_data = []
+    
+    refresh_button.config(text="Refresh List", state=tk.NORMAL)
+
+
+def process_selected_file(listbox, ui_elements, status_label):
+    """Process the selected file from the list"""
+    selection = listbox.curselection()
+    if not selection:
+        messagebox.showwarning("No Selection", "Please select a file from the list.")
+        return
+    
+    if not hasattr(listbox, 'file_data') or not listbox.file_data:
+        messagebox.showerror("Error", "No file data available. Please refresh the list.")
+        return
+    
+    selected_index = selection[0]
+    if selected_index >= len(listbox.file_data):
+        messagebox.showerror("Error", "Invalid selection. Please refresh the list.")
+        return
+    
+    # Get form data
+    notion_url = ui_elements['notion_entry'].get().strip()
+    description = ui_elements['description_entry'].get().strip()
+    
+    if not notion_url or not description:
+        messagebox.showerror("Error", "Please enter both Notion URL and description.")
+        return
+    
+    webhook_url = os.getenv("WEBHOOK_URL", "").strip()
+    if not webhook_url:
+        messagebox.showerror("Error", "Webhook URL not set in .env file.")
+        return
+    
+    # Get selected file info
+    file_info = listbox.file_data[selected_index]
+    local_file_path = file_info['filepath']
+    
+    if not os.path.exists(local_file_path):
+        messagebox.showerror("Error", f"File not found: {local_file_path}")
+        return
+    
+    # Update config with current UI values
+    config["whisper_model"] = ui_elements['model_entry'].get().strip()
+    config["whisper_device"] = ui_elements['device_entry'].get().strip()
+    save_config()
+    
+    # Disable manual processing button during processing
+    ui_elements['process_selected_button'].config(state=tk.DISABLED)
+    
+    def status_update(message):
+        status_label.config(text=message)
+    
+    def processing_complete():
+        ui_elements['process_selected_button'].config(state=tk.NORMAL)
+    
+    # Process the file in a separate thread
+    def process_thread():
+        try:
+            status_update(f"🎬 Processing: {file_info['filename']}")
+            
+            # Process the file (extract audio then transcribe)
+            transcription = process_audio_file(local_file_path, status_update)
+            
+            if transcription:
+                # Send to webhook
+                send_to_webhook(notion_url, description, transcription, file_info['url'], local_file_path)
+                status_update("✅ File processed and sent to webhook!")
+            else:
+                status_update("❌ File processing failed")
+                
+        except Exception as e:
+            logging.error(f"[Manual Process] Error processing selected file: {e}")
+            status_update(f"❌ Error: {str(e)}")
+        finally:
+            processing_complete()
+    
+    # Start processing in background thread
+    thread = threading.Thread(target=process_thread, daemon=True)
+    thread.start()
 
 
 def stop_monitoring(status_callback, ui_elements):
@@ -444,38 +598,46 @@ def create_gui():
 
     root = tk.Tk()
     root.title("Notion + ShareX Monitor with Local Transcription")
-    root.geometry("500x650")
+    root.geometry("600x900")
 
-    tk.Label(root, text="Notion URL:").pack(pady=(10, 0))
-    notion_entry = tk.Entry(root, width=60)
+    # Create notebook for tabs
+    notebook = ttk.Notebook(root)
+    notebook.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
+
+    # Tab 1: Automatic Monitoring
+    auto_frame = ttk.Frame(notebook)
+    notebook.add(auto_frame, text="Auto Monitor")
+
+    tk.Label(auto_frame, text="Notion URL:").pack(pady=(10, 0))
+    notion_entry = tk.Entry(auto_frame, width=70)
     notion_entry.pack(pady=5)
 
-    tk.Label(root, text="Description:").pack()
-    description_entry = tk.Entry(root, width=60)
+    tk.Label(auto_frame, text="Description:").pack()
+    description_entry = tk.Entry(auto_frame, width=70)
     description_entry.pack(pady=5)
 
     # Wait timer configuration
-    tk.Label(root, text="Time Limit (minutes):").pack()
-    timer_entry = tk.Entry(root, width=60)
+    tk.Label(auto_frame, text="Time Limit (minutes):").pack()
+    timer_entry = tk.Entry(auto_frame, width=70)
     timer_entry.insert(0, str(config.get("wait_timer_minutes", 60)))
     timer_entry.pack(pady=5)
 
     # Whisper model selection
-    tk.Label(root, text="Whisper Model (tiny,base,small,medium,large):").pack()
-    model_entry = tk.Entry(root, width=60)
+    tk.Label(auto_frame, text="Whisper Model (tiny,base,small,medium,large):").pack()
+    model_entry = tk.Entry(auto_frame, width=70)
     model_entry.insert(0, config.get("whisper_model", "base"))
     model_entry.pack(pady=5)
 
     # Device selection
-    tk.Label(root, text="Device (cpu,cuda):").pack()
-    device_entry = tk.Entry(root, width=60)
+    tk.Label(auto_frame, text="Device (cpu,cuda):").pack()
+    device_entry = tk.Entry(auto_frame, width=70)
     device_entry.insert(0, config.get("whisper_device", "cpu"))
     device_entry.pack(pady=5)
 
-    status_label = tk.Label(root, text="", fg="blue", wraplength=480)
+    status_label = tk.Label(auto_frame, text="", fg="blue", wraplength=580)
     status_label.pack(pady=10)
 
-    file_label = tk.Label(root, text="No file selected", fg="gray")
+    file_label = tk.Label(auto_frame, text="No file selected", fg="gray")
     file_label.pack()
 
     # Create UI elements dictionary for easier management
@@ -483,7 +645,7 @@ def create_gui():
 
     # Stop monitoring button
     reset_button = tk.Button(
-        root,
+        auto_frame,
         text="Stop Monitoring",
         state=tk.DISABLED,
         bg="#FF5722",
@@ -493,7 +655,7 @@ def create_gui():
     reset_button.pack(pady=5)
 
     submit_button = tk.Button(
-        root,
+        auto_frame,
         text="Start Monitoring",
         state=tk.DISABLED,
         bg="#4CAF50",
@@ -503,11 +665,75 @@ def create_gui():
     submit_button.pack(pady=10)
 
     select_button = tk.Button(
-        root,
+        auto_frame,
         text="Select ShareX history.json",
         command=lambda: select_history_file(file_label, submit_button)
     )
     select_button.pack(pady=5)
+
+    info_label = tk.Label(
+        auto_frame,
+        text="This tool monitors ShareX history for new audio/video files\n"
+             "for a specified time limit. Once the time limit is reached,\n"
+             "monitoring stops automatically. When an audio/video file is found,\n"
+             "it transcribes it locally using Whisper and sends to your webhook.\n\n"
+             "Note: First run will download the Whisper model (base is ~150MB).",
+        fg="gray",
+        font=("Arial", 8),
+        wraplength=580
+    )
+    info_label.pack(pady=10)
+
+    # Tab 2: Manual File Selection
+    manual_frame = ttk.Frame(notebook)
+    notebook.add(manual_frame, text="Manual Selection")
+
+    tk.Label(manual_frame, text="Recent Audio/Video Files (Last 24 Hours):").pack(pady=(10, 5))
+
+    # Create listbox with scrollbar
+    listbox_frame = tk.Frame(manual_frame)
+    listbox_frame.pack(pady=5, padx=10, fill=tk.BOTH, expand=True)
+
+    scrollbar = tk.Scrollbar(listbox_frame)
+    scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+    file_listbox = tk.Listbox(listbox_frame, yscrollcommand=scrollbar.set, height=15)
+    file_listbox.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+    scrollbar.config(command=file_listbox.yview)
+
+    # Refresh button
+    refresh_button = tk.Button(
+        manual_frame,
+        text="Refresh List",
+        command=lambda: refresh_file_list(file_listbox, refresh_button),
+        bg="#2196F3",
+        fg="white",
+        font=("Arial", 9)
+    )
+    refresh_button.pack(pady=5)
+
+    # Process selected button
+    process_selected_button = tk.Button(
+        manual_frame,
+        text="Process Selected File",
+        state=tk.DISABLED,
+        bg="#FF9800",
+        fg="white",
+        font=("Arial", 10, "bold")
+    )
+    process_selected_button.pack(pady=10)
+
+    manual_info_label = tk.Label(
+        manual_frame,
+        text="Use this tab if you forgot to start monitoring before uploading.\n"
+             "Select a recent file and click 'Process Selected File' to transcribe\n"
+             "and send it to your webhook. Make sure to fill in the Notion URL\n"
+             "and description in the Auto Monitor tab first.",
+        fg="gray",
+        font=("Arial", 8),
+        wraplength=580
+    )
+    manual_info_label.pack(pady=10)
 
     # Populate UI elements dictionary
     ui_elements = {
@@ -518,7 +744,8 @@ def create_gui():
         'device_entry': device_entry,
         'submit_button': submit_button,
         'select_button': select_button,
-        'reset_button': reset_button
+        'reset_button': reset_button,
+        'process_selected_button': process_selected_button
     }
 
     # Configure button commands with ui_elements
@@ -528,6 +755,9 @@ def create_gui():
     submit_button.config(
         command=lambda: handle_submission(ui_elements, status_label)
     )
+    process_selected_button.config(
+        command=lambda: process_selected_file(file_listbox, ui_elements, status_label)
+    )
 
     # Bindings for updates
     timer_entry.bind("<FocusOut>", lambda e: update_wait_timer(timer_entry))
@@ -535,18 +765,18 @@ def create_gui():
     model_entry.bind("<FocusOut>", lambda e: update_whisper_model(model_entry))
     device_entry.bind("<FocusOut>", lambda e: update_whisper_device(device_entry))
 
-    info_label = tk.Label(
-        root,
-        text="This tool monitors ShareX history for new audio/video files\n"
-             "for a specified time limit. Once the time limit is reached,\n"
-             "monitoring stops automatically. When an audio/video file is found,\n"
-             "it transcribes it locally using Whisper and sends to your webhook.\n\n"
-             "Note: First run will download the Whisper model (base is ~150MB).",
-        fg="gray",
-        font=("Arial", 8),
-        wraplength=480
-    )
-    info_label.pack(pady=10)
+    # Enable/disable process button based on file selection
+    def on_file_select(event):
+        if file_listbox.curselection() and hasattr(file_listbox, 'file_data') and file_listbox.file_data:
+            process_selected_button.config(state=tk.NORMAL)
+        else:
+            process_selected_button.config(state=tk.DISABLED)
+    
+    file_listbox.bind('<<ListboxSelect>>', on_file_select)
+
+    # Initialize the file list
+    if config.get("history_path"):
+        refresh_file_list(file_listbox, refresh_button)
 
     if config.get("history_path") and os.path.exists(config["history_path"]):
         file_label.config(text=f"Selected: {os.path.basename(config['history_path'])}")
