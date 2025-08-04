@@ -4,7 +4,7 @@ import os
 import threading
 from datetime import datetime, timezone, timedelta
 import tkinter as tk
-from tkinter import messagebox, filedialog, ttk
+from tkinter import messagebox, filedialog, ttk, simpledialog
 import requests
 import tempfile
 import subprocess
@@ -37,7 +37,6 @@ config = {
     "whisper_model": "base",
     "whisper_device": "cpu",
     "wait_timer_minutes": 60,
-    "webhook_events_url": "https://n8n.roochedigital.com/webhook/get-events"
 }
 
 # Global variables for monitoring control
@@ -45,6 +44,270 @@ monitoring_active = False
 monitoring_thread = None
 start_time = None
 
+try:
+    from pynput.keyboard import Key, Controller
+    keyboard_controller = Controller()
+    PYNPUT_AVAILABLE = True
+except ImportError:
+    PYNPUT_AVAILABLE = False
+    print("Warning: pynput not installed. ShareX keyboard shortcuts will not work.")
+    print("Install with: pip install pynput")
+def trigger_sharex_recording():
+    """Trigger ShareX screen recording with Shift + Print Screen"""
+    if not PYNPUT_AVAILABLE:
+        logging.error("[ShareX] pynput not available - cannot send keyboard shortcuts")
+        return False
+    
+    try:
+        logging.debug("[ShareX] Triggering screen recording (Shift + Print Screen)")
+        
+        # Press Shift + Print Screen
+        keyboard_controller.press(Key.shift)
+        keyboard_controller.press(Key.print_screen)
+        
+        # Release keys
+        keyboard_controller.release(Key.print_screen)
+        keyboard_controller.release(Key.shift)
+        
+        logging.debug("[ShareX] Screen recording shortcut sent successfully")
+        return True
+        
+    except Exception as e:
+        logging.error(f"[ShareX] Error sending screen recording shortcut: {e}")
+        return False
+
+
+def stop_sharex_recording():
+    """Stop ShareX screen recording with Shift + Print Screen (same shortcut toggles)"""
+    if not PYNPUT_AVAILABLE:
+        logging.error("[ShareX] pynput not available - cannot send keyboard shortcuts")
+        return False
+    
+    try:
+        logging.debug("[ShareX] Stopping screen recording (Shift + Print Screen)")
+        
+        # Press Shift + Print Screen again to stop
+        keyboard_controller.press(Key.shift)
+        keyboard_controller.press(Key.print_screen)
+        
+        # Release keys
+        keyboard_controller.release(Key.print_screen)
+        keyboard_controller.release(Key.shift)
+        
+        logging.debug("[ShareX] Stop recording shortcut sent successfully")
+        return True
+        
+    except Exception as e:
+        logging.error(f"[ShareX] Error sending stop recording shortcut: {e}")
+        return False
+
+class PassFailDialog:
+    def __init__(self, parent):
+        self.result = None
+        self.reason = None
+        
+        # Create dialog window
+        self.dialog = tk.Toplevel(parent)
+        self.dialog.title("Meeting Result")
+        self.dialog.geometry("500x400")
+        self.dialog.resizable(False, False)
+        self.dialog.transient(parent)
+        self.dialog.grab_set()
+        
+        # Center the dialog
+        self.center_dialog(parent)
+        
+        # Create UI elements
+        self.create_widgets()
+        
+        # Focus on dialog
+        self.dialog.focus_set()
+    
+    def center_dialog(self, parent):
+        """Center the dialog over the parent window"""
+        self.dialog.update_idletasks()
+        parent_x = parent.winfo_rootx()
+        parent_y = parent.winfo_rooty()
+        parent_width = parent.winfo_width()
+        parent_height = parent.winfo_height()
+        
+        dialog_width = self.dialog.winfo_reqwidth()
+        dialog_height = self.dialog.winfo_reqheight()
+        
+        x = parent_x + (parent_width - dialog_width) // 2
+        y = parent_y + (parent_height - dialog_height) // 2
+        
+        self.dialog.geometry(f"+{x}+{y}")
+    
+    def create_widgets(self):
+        # Main container frame
+        main_frame = tk.Frame(self.dialog)
+        main_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
+        
+        # Title
+        title_label = tk.Label(
+            main_frame,
+            text="Meeting Result",
+            font=("Arial", 16, "bold"),
+            fg="#333"
+        )
+        title_label.pack(pady=(0, 20))
+        
+        # Result selection frame
+        result_frame = tk.LabelFrame(main_frame, text="Select Result", font=("Arial", 11, "bold"))
+        result_frame.pack(fill=tk.X, pady=(0, 15))
+        
+        self.result_var = tk.StringVar()
+        
+        # Pass radio button
+        pass_radio = tk.Radiobutton(
+            result_frame,
+            text="✅ Pass - Meeting was successful",
+            variable=self.result_var,
+            value="pass",
+            font=("Arial", 10),
+            fg="green"
+        )
+        pass_radio.pack(anchor=tk.W, padx=15, pady=8)
+        
+        # Fail radio button
+        fail_radio = tk.Radiobutton(
+            result_frame,
+            text="❌ Fail - Meeting had issues",
+            variable=self.result_var,
+            value="fail",
+            font=("Arial", 10),
+            fg="red"
+        )
+        fail_radio.pack(anchor=tk.W, padx=15, pady=8)
+        
+        # Reason frame
+        reason_frame = tk.LabelFrame(main_frame, text="Reason (Required)", font=("Arial", 11, "bold"))
+        reason_frame.pack(fill=tk.X, pady=(0, 20))
+        
+        # Reason text area with scrollbar
+        text_frame = tk.Frame(reason_frame)
+        text_frame.pack(fill=tk.BOTH, expand=True, padx=15, pady=15)
+        
+        self.reason_text = tk.Text(
+            text_frame,
+            height=4,
+            width=50,
+            wrap=tk.WORD,
+            font=("Arial", 10)
+        )
+        
+        scrollbar = tk.Scrollbar(text_frame)
+        scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+        
+        self.reason_text.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        self.reason_text.config(yscrollcommand=scrollbar.set)
+        scrollbar.config(command=self.reason_text.yview)
+        
+        # Placeholder text
+        self.reason_text.insert(tk.END, "Enter the reason for this result...")
+        self.reason_text.config(fg="gray")
+        
+        # Bind events for placeholder text
+        self.reason_text.bind("<FocusIn>", self.on_reason_focus_in)
+        self.reason_text.bind("<FocusOut>", self.on_reason_focus_out)
+        
+        # Button frame - FIXED LAYOUT
+        button_frame = tk.Frame(main_frame)
+        button_frame.pack(fill=tk.X, pady=(20, 0))
+        
+        # Create a centered frame for buttons
+        button_container = tk.Frame(button_frame)
+        button_container.pack(expand=True)
+        
+        # Cancel button (left)
+        self.cancel_btn = tk.Button(
+            button_container,
+            text="❌ Cancel",
+            command=self.cancel,
+            bg="#757575",
+            fg="white",
+            font=("Arial", 11),
+            padx=20,
+            pady=10,
+            width=12
+        )
+        self.cancel_btn.pack(side=tk.LEFT, padx=(0, 10))
+        
+        # Submit button (right)
+        self.submit_btn = tk.Button(
+            button_container,
+            text="✅ Submit Result",
+            command=self.submit,
+            bg="#4CAF50",
+            fg="white",
+            font=("Arial", 11, "bold"),
+            padx=20,
+            pady=10,
+            width=15
+        )
+        self.submit_btn.pack(side=tk.LEFT, padx=(10, 0))
+        
+        # Bind keyboard shortcuts
+        self.dialog.bind('<Return>', lambda e: self.submit())
+        self.dialog.bind('<Escape>', lambda e: self.cancel())
+        
+        # Set focus to Pass radio button by default
+        pass_radio.focus_set()
+        
+        # Force update to ensure everything is visible
+        self.dialog.update_idletasks()
+        self.dialog.update()
+    
+    def on_reason_focus_in(self, event):
+        """Clear placeholder text when focused"""
+        current_text = self.reason_text.get(1.0, tk.END).strip()
+        if current_text == "Enter the reason for this result...":
+            self.reason_text.delete(1.0, tk.END)
+            self.reason_text.config(fg="black")
+    
+    def on_reason_focus_out(self, event):
+        """Restore placeholder text if empty"""
+        current_text = self.reason_text.get(1.0, tk.END).strip()
+        if not current_text:
+            self.reason_text.insert(1.0, "Enter the reason for this result...")
+            self.reason_text.config(fg="gray")
+    
+    def submit(self):
+        """Validate and submit the form"""
+        result = self.result_var.get()
+        reason = self.reason_text.get(1.0, tk.END).strip()
+        
+        # Validation
+        if not result:
+            messagebox.showerror("Error", "Please select Pass or Fail.", parent=self.dialog)
+            return
+        
+        if not reason or reason == "Enter the reason for this result...":
+            messagebox.showerror("Error", "Please enter a reason.", parent=self.dialog)
+            self.reason_text.focus_set()
+            return
+        
+        if len(reason) < 5:
+            messagebox.showerror("Error", "Reason must be at least 5 characters long.", parent=self.dialog)
+            self.reason_text.focus_set()
+            return
+        
+        # Set results and close dialog
+        self.result = result
+        self.reason = reason
+        self.dialog.destroy()
+    
+    def cancel(self):
+        """Cancel the dialog"""
+        self.result = None
+        self.reason = None
+        self.dialog.destroy()
+    
+    def show(self):
+        """Show the dialog and wait for result"""
+        self.dialog.wait_window()
+        return self.result, self.reason
 
 def save_config():
     with open(CONFIG_FILE, "w") as f:
@@ -64,8 +327,8 @@ def load_config():
 def fetch_calendar_events():
     """Fetch calendar events from the webhook"""
     try:
-        webhook_url = config.get("webhook_events_url", "")
-        if not webhook_url:
+        webhook_url = os.getenv("WEBHOOK_URL2", "").strip()
+        if not webhook_url: 
             logging.error("[Calendar] No webhook events URL configured")
             return []
         
@@ -485,9 +748,14 @@ def stop_monitoring(status_callback, ui_elements):
     """Stop the monitoring process and re-enable UI"""
     global monitoring_active
     monitoring_active = False
-    status_callback("🛑 Monitoring stopped")
-    logging.debug("[Monitor] Monitoring stopped by user or timer")
     
+    # Stop ShareX recording
+    if stop_sharex_recording():
+        status_callback("🛑 Monitoring stopped & ShareX recording stopped")
+    else:
+        status_callback("🛑 Monitoring stopped")
+    
+    logging.debug("[Monitor] Monitoring stopped by user or timer")
     enable_ui_elements(ui_elements, True)
 
 
@@ -502,6 +770,9 @@ def enable_ui_elements(ui_elements, enable=True):
     ui_elements['device_entry'].config(state=state)
     ui_elements['submit_button'].config(state=state)
     ui_elements['select_button'].config(state=state)
+    ui_elements['pass_fail_button'].config(state=state)
+    ui_elements['start_recording_button'].config(state=state)
+    ui_elements['stop_recording_button'].config(state=state)
     
     ui_elements['reset_button'].config(state=tk.DISABLED if enable else tk.NORMAL)
 
@@ -606,26 +877,98 @@ def wait_for_audio_video_upload_with_timeout(after_dt: datetime, timeout_minutes
     monitoring_thread.start()
 
 
-def send_to_webhook(notion_url, description, transcription, drive_url, local_file_path):
+def send_to_webhook(notion_url, description, transcription=None, drive_url=None, local_file_path=None, result=None, reason=None):
+    """Send data to webhook with optional pass/fail result"""
     webhook_url = os.getenv("WEBHOOK_URL", "").strip()
     if not webhook_url:
         logging.warning("[Webhook] No webhook URL configured in .env file.")
         return
 
-    logging.debug("[Webhook] Sending transcription data...")
+    logging.debug("[Webhook] Sending data to webhook...")
     data = {
         "notion_url": notion_url,
         "description": description,
-        "transcription": transcription,
-        "drive_url": drive_url,
-        "local_file_path": local_file_path
     }
+    
+    # Add transcription data if available
+    if transcription is not None:
+        data["transcription"] = transcription
+    if drive_url is not None:
+        data["drive_url"] = drive_url
+    if local_file_path is not None:
+        data["local_file_path"] = local_file_path
+    
+    # Add pass/fail result if available
+    if result is not None:
+        data["result"] = result
+    if reason is not None:
+        data["reason"] = reason
+    
     try:
         res = requests.post(webhook_url, json=data)
         res.raise_for_status()
         logging.debug("[Webhook] Sent successfully.")
+        return True
     except Exception as e:
         logging.error(f"[Webhook] Failed to send: {e}")
+        return False
+
+def handle_start_recording(status_label):
+    """Manually start ShareX screen recording"""
+    if trigger_sharex_recording():
+        status_label.config(text="🎥 ShareX screen recording started!")
+        logging.info("[ShareX] Manual screen recording started")
+    else:
+        status_label.config(text="❌ Failed to start ShareX recording")
+        if not PYNPUT_AVAILABLE:
+            messagebox.showerror("Error", "pynput library not installed.\nInstall with: pip install pynput")
+
+
+def handle_stop_recording(status_label):
+    """Manually stop ShareX screen recording"""
+    if stop_sharex_recording():
+        status_label.config(text="🛑 ShareX screen recording stopped!")
+        logging.info("[ShareX] Manual screen recording stopped")
+    else:
+        status_label.config(text="❌ Failed to stop ShareX recording")
+        if not PYNPUT_AVAILABLE:
+            messagebox.showerror("Error", "pynput library not installed.\nInstall with: pip install pynput")
+def handle_pass_fail(ui_elements, status_label, root):
+    """Handle pass/fail button click"""
+    notion_url = ui_elements['notion_entry'].get().strip()
+    description = ui_elements['description_entry'].get().strip()
+
+    if not notion_url or not description:
+        messagebox.showerror("Error", "Please enter both Notion URL and description before submitting pass/fail.")
+        return
+
+    webhook_url = os.getenv("WEBHOOK_URL", "").strip()
+    if not webhook_url:
+        messagebox.showerror("Error", "Webhook URL not set in .env file.")
+        return
+
+    # Show pass/fail dialog
+    dialog = PassFailDialog(root)
+    result, reason = dialog.show()
+    
+    if result and reason:
+        # Send to webhook
+        status_label.config(text="📤 Sending pass/fail result...")
+        
+        success = send_to_webhook(
+            notion_url=notion_url,
+            description=description,
+            result=result,
+            reason=reason
+        )
+        
+        if success:
+            status_label.config(text=f"✅ {result.title()} result sent successfully!")
+            logging.info(f"[PassFail] Sent {result} result: {reason}")
+        else:
+            status_label.config(text="❌ Failed to send pass/fail result")
+    else:
+        status_label.config(text="❌ Pass/fail submission cancelled")
 
 
 def handle_submission(ui_elements, status_label):
@@ -663,6 +1006,27 @@ def handle_submission(ui_elements, status_label):
     save_config()
     
     enable_ui_elements(ui_elements, False)
+    
+    # TRIGGER SHAREX SCREEN RECORDING
+    if trigger_sharex_recording():
+        status_label.config(text="🎥 ShareX screen recording started! Monitoring for uploads...")
+    else:
+        status_label.config(text="⚠️ ShareX recording trigger failed, but monitoring for uploads...")
+    
+    def on_transcription_complete(transcription, drive_url, local_file_path):
+        send_to_webhook(notion_url, description, transcription, drive_url, local_file_path)
+        status_label.config(text="✅ Transcription sent to webhook!")
+
+    def status_update(message):
+        status_label.config(text=message)
+
+    wait_for_audio_video_upload_with_timeout(
+        submit_time, 
+        wait_minutes, 
+        on_transcription_complete, 
+        status_update,
+        ui_elements
+    )
     
     def on_transcription_complete(transcription, drive_url, local_file_path):
         send_to_webhook(notion_url, description, transcription, drive_url, local_file_path)
@@ -707,7 +1071,7 @@ def create_gui():
 
     root = tk.Tk()
     root.title("Calendar-Integrated ShareX Monitor")
-    root.geometry("700x900")
+    root.geometry("700x1000")  # Slightly taller for new buttons
 
     # Create notebook for tabs
     notebook = ttk.Notebook(root)
@@ -777,20 +1141,24 @@ def create_gui():
     file_label = tk.Label(calendar_frame, text="No ShareX history file selected", fg="gray")
     file_label.pack()
 
-    # Control buttons
+    # Control buttons frame
     button_frame = tk.Frame(calendar_frame)
     button_frame.pack(pady=10)
 
+    # First row of buttons - Main controls
+    first_row = tk.Frame(button_frame)
+    first_row.pack()
+
     select_button = tk.Button(
-        button_frame,
+        first_row,
         text="📁 Select ShareX History",
         command=lambda: select_history_file(file_label, submit_button)
     )
     select_button.pack(side=tk.LEFT, padx=5)
 
     submit_button = tk.Button(
-        button_frame,
-        text="🚀 Start Monitoring",
+        first_row,
+        text="🚀 Start Monitoring + Recording",
         state=tk.DISABLED,
         bg="#4CAF50",
         fg="white",
@@ -799,14 +1167,75 @@ def create_gui():
     submit_button.pack(side=tk.LEFT, padx=5)
 
     reset_button = tk.Button(
-        button_frame,
-        text="🛑 Stop Monitoring",
+        first_row,
+        text="🛑 Stop All",
         state=tk.DISABLED,
         bg="#FF5722",
         fg="white",
         font=("Arial", 9)
     )
     reset_button.pack(side=tk.LEFT, padx=5)
+
+    # Second row - ShareX Controls
+    second_row = tk.Frame(button_frame)
+    second_row.pack(pady=(5, 0))
+
+    start_recording_button = tk.Button(
+        second_row,
+        text="🎥 Start ShareX Recording",
+        bg="#FF9800",
+        fg="white",
+        font=("Arial", 9),
+        padx=15
+    )
+    start_recording_button.pack(side=tk.LEFT, padx=5)
+
+    stop_recording_button = tk.Button(
+        second_row,
+        text="⏹️ Stop ShareX Recording",
+        bg="#795548",
+        fg="white",
+        font=("Arial", 9),
+        padx=15
+    )
+    stop_recording_button.pack(side=tk.LEFT, padx=5)
+
+    # Third row - Pass/Fail button
+    third_row = tk.Frame(button_frame)
+    third_row.pack(pady=(10, 0))
+
+    pass_fail_button = tk.Button(
+        third_row,
+        text="✅❌ Submit Pass/Fail Result",
+        bg="#9C27B0",
+        fg="white",
+        font=("Arial", 10, "bold"),
+        padx=20
+    )
+    pass_fail_button.pack()
+
+    # ShareX info
+    sharex_info = tk.Label(
+        calendar_frame,
+        text="ShareX Integration: 'Start Monitoring' automatically begins screen recording.\n"
+             "Use manual controls for independent recording without monitoring.\n"
+             "Requires: pip install pynput",
+        fg="gray",
+        font=("Arial", 8),
+        wraplength=680
+    )
+    sharex_info.pack(pady=(5, 0))
+
+    # Pass/Fail info
+    pass_fail_info = tk.Label(
+        calendar_frame,
+        text="Use 'Submit Pass/Fail Result' to report meeting outcomes without audio transcription.\n"
+             "This is useful for meetings that failed to occur or didn't achieve their objectives.",
+        fg="gray",
+        font=("Arial", 8),
+        wraplength=680
+    )
+    pass_fail_info.pack(pady=(5, 0))
 
     # Tab 2: Manual Selection (existing functionality)
     manual_frame = ttk.Frame(notebook)
@@ -867,8 +1296,10 @@ def create_gui():
         text="1. Click 'Refresh Calendar Events' to load your meetings\n"
              "2. Select a meeting from the list (upcoming meetings are highlighted)\n" 
              "3. Notion URL and description will auto-fill\n"
-             "4. Click 'Start Monitoring' to watch for ShareX uploads\n"
-             "5. When you upload an audio/video file, it will auto-transcribe and send to your webhook\n\n"
+             "4. Click 'Start Monitoring + Recording' to begin ShareX recording AND watch for uploads\n"
+             "5. When you upload an audio/video file, it will auto-transcribe and send to your webhook\n"
+             "6. Or use 'Submit Pass/Fail Result' to report meeting outcomes directly\n"
+             "7. Use manual ShareX controls for independent recording\n\n"
              "⚡ Meetings starting within 30 minutes are automatically highlighted and selected!",
         fg="gray",
         font=("Arial", 8),
@@ -887,7 +1318,10 @@ def create_gui():
         'submit_button': submit_button,
         'select_button': select_button,
         'reset_button': reset_button,
-        'process_selected_button': process_selected_button
+        'process_selected_button': process_selected_button,
+        'pass_fail_button': pass_fail_button,
+        'start_recording_button': start_recording_button,
+        'stop_recording_button': stop_recording_button
     }
 
     # Configure button commands
@@ -909,6 +1343,18 @@ def create_gui():
     
     process_selected_button.config(
         command=lambda: process_selected_file(manual_listbox, ui_elements, status_label)
+    )
+    
+    pass_fail_button.config(
+        command=lambda: handle_pass_fail(ui_elements, status_label, root)
+    )
+    
+    start_recording_button.config(
+        command=lambda: handle_start_recording(status_label)
+    )
+    
+    stop_recording_button.config(
+        command=lambda: handle_stop_recording(status_label)
     )
 
     # Event handlers
