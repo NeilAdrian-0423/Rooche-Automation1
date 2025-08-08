@@ -1,3 +1,26 @@
-requests
-transcribe-anything
-python-dotenv
+# Core dependencies
+python-dotenv>=1.0.0
+requests>=2.31.0
+transcribe-anything>=2.7.0
+
+# GUI
+tkinter  # Usually comes with Python
+
+# Audio/Video processing
+ffmpeg-python>=0.2.0
+
+# ShareX integration (optional but recommended)
+pynput>=1.7.6
+
+# Whisper dependencies (included with transcribe-anything)
+openai-whisper>=20230918
+torch>=2.0.0  # For GPU support
+numpy>=1.24.0
+
+# Additional utilities
+tempfile  # Built-in
+threading  # Built-in
+json  # Built-in
+logging  # Built-in
+datetime  # Built-in
+typing  # Built-in

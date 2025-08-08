@@ -1020,21 +1020,6 @@ def handle_submission(ui_elements, status_label):
     def status_update(message):
         status_label.config(text=message)
 
-    wait_for_audio_video_upload_with_timeout(
-        submit_time, 
-        wait_minutes, 
-        on_transcription_complete, 
-        status_update,
-        ui_elements
-    )
-    
-    def on_transcription_complete(transcription, drive_url, local_file_path):
-        send_to_webhook(notion_url, description, transcription, drive_url, local_file_path)
-        status_label.config(text="✅ Transcription sent to webhook!")
-
-    def status_update(message):
-        status_label.config(text=message)
-
     status_update(f"🚀 Starting monitoring with {wait_minutes} minute time limit...")
     
     wait_for_audio_video_upload_with_timeout(
@@ -1045,7 +1030,7 @@ def handle_submission(ui_elements, status_label):
         ui_elements
     )
 
-
+    
 def select_history_file(label, submit_button):
     path = filedialog.askopenfilename(
         title="Select ShareX history.json",
