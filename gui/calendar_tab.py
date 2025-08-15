@@ -9,9 +9,9 @@ from PyQt6.QtWidgets import (
     QListWidget, QLineEdit, QGroupBox, QFileDialog, QMessageBox,
     QScrollArea, QFrame, QDialog, QDialogButtonBox, QSizePolicy
 )
-from PyQt6.QtCore import Qt, QThread, pyqtSignal, QTimer
+from PyQt6.QtCore import Qt, QThread, pyqtSignal, QTimer, QUrl
 
-from PyQt6.QtGui import QFont
+from PyQt6.QtGui import QFont, QDesktopServices
 
 from .dialogs import PassFailDialog, WaitForUploadDialog
 from utils.helpers import extract_notion_url
@@ -230,7 +230,22 @@ class CalendarTab(QWidget):
         form_group = QGroupBox("Meeting Details (Auto-filled)")
         form_group.setStyleSheet("QGroupBox { font-weight: bold; }")
         form_layout = QVBoxLayout()
-        
+        form_layout.addWidget(QLabel("Meeting Link:"))
+        self.ui_elements['meeting_link_entry'] = QLineEdit()
+        self.ui_elements['meeting_link_entry'].setFont(QFont("Arial", 9))
+        self.ui_elements['meeting_link_entry'].setReadOnly(True)  # display only
+        self.ui_elements['meeting_link_entry'].setCursor(Qt.CursorShape.PointingHandCursor)
+
+        # store original click behavior
+        original_mousePressEvent = self.ui_elements['meeting_link_entry'].mousePressEvent
+
+        def open_link_on_click(e):
+            QDesktopServices.openUrl(QUrl(self.ui_elements['meeting_link_entry'].text()))
+            original_mousePressEvent(e)  # keep default
+
+        self.ui_elements['meeting_link_entry'].mousePressEvent = open_link_on_click
+
+        form_layout.addWidget(self.ui_elements['meeting_link_entry'])
         form_layout.addWidget(QLabel("Notion URL:"))
         self.ui_elements['notion_entry'] = QLineEdit()
         self.ui_elements['notion_entry'].setFont(QFont("Arial", 9))
@@ -478,13 +493,16 @@ class CalendarTab(QWidget):
         current_row = self.cal_listbox.currentRow()
         if current_row < 0 or current_row >= len(self.event_data):
             return
-        
+
         event = self.event_data[current_row]
-        
+
+        # Auto-fill Meeting Link
+        self.ui_elements['meeting_link_entry'].setText(event.get('meeting_link', '').strip())
+
         # Auto-fill Notion URL
         notion_url = extract_notion_url(event['notion_url'])
         self.ui_elements['notion_entry'].setText(notion_url)
-        
+
         # Auto-fill description
         self.ui_elements['description_entry'].setText(event['auto_description'])
     

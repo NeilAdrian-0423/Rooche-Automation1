@@ -56,6 +56,8 @@ class CalendarService:
                 time_diff = start_time - now
                 is_upcoming = 0 <= time_diff.total_seconds() <= 1800
                 
+                location = event.get('location', '').strip()
+                
                 processed_event = {
                     'id': event['id'],
                     'summary': summary,
@@ -64,7 +66,11 @@ class CalendarService:
                     'display_time': display_time,
                     'participant_name': participant_name,
                     'notion_url': event.get('description', '').strip(),
-                    'location': event.get('location', ''),
+                    'location': location,
+                    'meeting_link': (
+                            location if location.startswith("http") or "://" in location
+                            else f"https://{location}"
+                        ) if location else "",
                     'is_upcoming': is_upcoming,
                     'time_until': time_diff.total_seconds() if time_diff.total_seconds() > 0 else 0,
                     'display_text': f"{local_start.strftime('%Y-%m-%d %I:%M %p')} - {summary}",
@@ -80,6 +86,7 @@ class CalendarService:
         processed_events.sort(key=lambda x: x['start_datetime'])
         logging.debug(f"[Calendar] Successfully processed {len(processed_events)} events")
         return processed_events
+
     
     def _extract_participant_name(self, summary: str) -> str:
         """Extract participant name from meeting summary."""
