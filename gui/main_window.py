@@ -2,12 +2,12 @@
 
 import os
 import sys
+import logging
 from PyQt6.QtWidgets import (
-    QApplication, QMainWindow, QTabWidget, 
-    QVBoxLayout, QWidget, QMessageBox
+    QApplication, QMainWindow, QTabWidget,
+    QVBoxLayout, QWidget
 )
 from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QIcon
 from dotenv import load_dotenv
 
 from core.config import ConfigManager
@@ -16,16 +16,21 @@ from services.calendar_service import CalendarService
 from services.sharex_service import ShareXService
 from services.webhook_service import WebhookService
 from services.monitoring_service import MonitoringService
-from .calendar_tab import CalendarTab
-from .manual_tab import ManualTab
+from services.deep_live_service import DeepLiveService
+
+from gui.calendar_tab import CalendarTab
+from gui.manual_tab import ManualTab
+# from gui.deep_live_cam_tab import DeepLiveCamTab
 
 # Load environment variables
 load_dotenv()
+logger = logging.getLogger(__name__)
+
 
 class MainApplication(QMainWindow):
     def __init__(self):
         super().__init__()
-        
+
         # Initialize services
         self.config_manager = ConfigManager()
         self.audio_processor = AudioProcessor(self.config_manager)
@@ -37,29 +42,30 @@ class MainApplication(QMainWindow):
             self.audio_processor,
             self.webhook_service
         )
-        
+
+        # Shared DeepLive service (so tabs can use it)
+        self.deep_live_service = DeepLiveService()
+
         # Setup main window
         self.setWindowTitle("Calendar-Integrated ShareX Monitor")
-        self.setGeometry(100, 100, 700, 1000)
-        
+        self.setGeometry(100, 100, 700, 900)
+
         # Create UI
         self.create_ui()
-    
+
     def create_ui(self):
         """Create the main UI."""
-        # Create central widget
+        # Central widget + layout
         central_widget = QWidget()
         self.setCentralWidget(central_widget)
-        
-        # Create main layout
         main_layout = QVBoxLayout(central_widget)
         main_layout.setContentsMargins(10, 10, 10, 10)
-        
-        # Create tab widget
+
+        # Tab widget
         self.tab_widget = QTabWidget()
         main_layout.addWidget(self.tab_widget)
-        
-        # Create calendar tab
+
+        # Calendar tab
         self.calendar_tab = CalendarTab(
             self.tab_widget,
             self.config_manager,
@@ -67,10 +73,11 @@ class MainApplication(QMainWindow):
             self.sharex_service,
             self.webhook_service,
             self.monitoring_service,
-            self.audio_processor
+            self.audio_processor,
+            self.deep_live_service  # 👈 pass shared service
         )
-        
-        # Create manual tab
+
+        # Manual tab
         self.manual_tab = ManualTab(
             self.tab_widget,
             self.config_manager,
@@ -79,31 +86,25 @@ class MainApplication(QMainWindow):
             self.webhook_service,
             self.calendar_tab
         )
-        
-        # Add tabs to tab widget
+
+        # Optional Deep Live Cam tab (if you want later)
+        # self.deep_live_cam_tab = DeepLiveCamTab(
+        #     self.tab_widget,
+        #     self.config_manager
+        # )
+
+        # Add tabs
         self.tab_widget.addTab(self.calendar_tab, "📅 Calendar Events")
         self.tab_widget.addTab(self.manual_tab, "📁 Manual Files")
-    
+        # self.tab_widget.addTab(self.deep_live_cam_tab, "🎥 Deep Live Cam")
+
     def closeEvent(self, event):
-        """Handle application close event."""
-        # Stop monitoring service if running
-        if hasattr(self, 'monitoring_service') and self.monitoring_service:
-            self.monitoring_service.stop()
-        event.accept()
-
-def main():
-    """Main entry point for the application."""
-    app = QApplication(sys.argv)
-    
-    # Set application style (optional)
-    app.setStyle('Fusion')
-    
-    # Create and show main window
-    main_window = MainApplication()
-    main_window.show()
-    
-    # Run the application
-    sys.exit(app.exec())
-
-if __name__ == "__main__":
-    main()
+        """Stop Deep Live safely when closing."""
+        try:
+            if self.deep_live_service:
+                self.deep_live_service.stop_deeplive()
+                logger.info("Deep Live terminated on exit")
+        except Exception as e:
+            logger.error(f"Error shutting down Deep Live: {e}")
+        finally:
+            event.accept()

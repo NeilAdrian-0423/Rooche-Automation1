@@ -1,16 +1,22 @@
-"""Main entry point for the application."""
-
 import sys
+import ctypes
+from ctypes import wintypes
 from PyQt6.QtWidgets import QApplication
 from core.logging_config import setup_logging
 from gui.main_window import MainApplication
 
 def main():
     """Initialize and run the application."""
+    # Set DPI awareness
+    try:
+        ctypes.windll.user32.SetProcessDpiAwarenessContext(-2)  # DPI_AWARENESS_CONTEXT_SYSTEM_AWARE
+    except Exception as e:
+        print(f"Failed to set DPI awareness: {e}")
+    
     # Set up logging
     setup_logging()
     
-    # Create QApplication FIRST (required by PyQt)
+    # Create QApplication
     app = QApplication(sys.argv)
     
     # Optional: Set application style

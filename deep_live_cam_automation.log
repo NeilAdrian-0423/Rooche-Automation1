@@ -1,0 +1,712 @@
+2025-08-29 01:06:02,684 - INFO - Added preset 'Jude Manigbas Laurel' with image 'G:/Shared drives/PD  Digi Infra/Working models/Jonathan Jumola/WhatsApp Image 2025-08-27 at 2.24.49 PM.jpeg'
+2025-08-29 01:11:49,732 - INFO - Starting Deep Live Cam...
+2025-08-29 01:12:22,753 - ERROR - Deep Live Cam window not found within timeout
+2025-08-29 12:24:17,298 - INFO - Starting Deep Live Cam...
+2025-08-29 12:24:50,296 - ERROR - Deep Live Cam window not found within timeout
+2025-08-29 12:27:35,288 - INFO - Starting Deep Live Cam...
+2025-08-29 12:28:08,316 - ERROR - Deep Live Cam window not found within timeout
+2025-08-29 12:47:20,489 - INFO - 🚀 Starting automation...
+2025-08-29 12:47:20,501 - INFO - Starting Deep Live Cam...
+2025-08-29 12:47:27,501 - INFO - Deep Live Cam window found: Deep-Live-Cam 1.8 GitHub Edition
+2025-08-29 12:47:27,501 - INFO - Configuring Deep Live Cam...
+2025-08-29 12:47:29,789 - INFO - Clicked Select a face button
+2025-08-29 12:47:38,683 - INFO - Clicked Live button
+2025-08-29 12:47:38,684 - INFO - Starting OBS...
+2025-08-29 12:47:40,690 - INFO - Automation completed successfully!
+2025-08-29 12:47:40,690 - INFO - ✅ Automation completed successfully!
+2025-08-29 12:51:12,357 - INFO - 🚀 Starting automation...
+2025-08-29 12:51:12,372 - INFO - Starting Deep Live Cam...
+2025-08-29 12:51:18,368 - INFO - Deep Live Cam window found: Deep-Live-Cam 1.8 GitHub Edition
+2025-08-29 12:51:18,368 - INFO - Configuring Deep Live Cam...
+2025-08-29 12:51:20,561 - INFO - Clicked Select a face button
+2025-08-29 12:51:29,429 - INFO - Clicked Live button
+2025-08-29 12:51:29,430 - INFO - Starting OBS...
+2025-08-29 12:51:31,447 - INFO - Automation completed successfully!
+2025-08-29 12:51:31,448 - INFO - ✅ Automation completed successfully!
+2025-08-29 13:04:17,410 - INFO - 🚀 Starting automation...
+2025-08-29 13:04:17,420 - INFO - Starting Deep Live Cam...
+2025-08-29 13:04:24,420 - INFO - Deep Live Cam window found: Deep-Live-Cam 1.8 GitHub Edition
+2025-08-29 13:04:24,421 - INFO - Configuring Deep Live Cam...
+2025-08-29 13:04:26,628 - INFO - Clicked Select a face button
+2025-08-29 13:04:30,614 - INFO - ❌ Automation failed: Failed to configure Deep Live Cam
+2025-08-29 13:09:28,979 - INFO - 🚀 Starting automation...
+2025-08-29 13:09:28,988 - INFO - Starting Deep Live Cam...
+2025-08-29 13:09:37,992 - INFO - Deep Live Cam window found: Deep-Live-Cam 1.8 GitHub Edition
+2025-08-29 13:09:37,993 - INFO - Configuring Deep Live Cam...
+2025-08-29 13:09:40,202 - INFO - Clicked Select a face button
+2025-08-29 13:09:41,203 - ERROR - Failed to configure Deep Live Cam: 'AutomationWorker' object has no attribute '_select_image_file'
+2025-08-29 13:09:41,203 - INFO - ❌ Automation failed: Failed to configure Deep Live Cam
+2025-08-29 13:11:44,442 - INFO - 🚀 Starting automation...
+2025-08-29 13:11:44,443 - INFO - Starting Deep Live Cam...
+2025-08-29 13:11:51,453 - INFO - Deep Live Cam window found: Deep-Live-Cam 1.8 GitHub Edition
+2025-08-29 13:11:51,454 - INFO - Configuring Deep Live Cam...
+2025-08-29 13:11:53,663 - INFO - Clicked Select a face button
+2025-08-29 13:11:54,663 - ERROR - Failed to configure Deep Live Cam: 'AutomationWorker' object has no attribute '_select_image_file'
+2025-08-29 13:11:54,664 - INFO - ❌ Automation failed: Failed to configure Deep Live Cam
+2025-08-29 13:13:35,006 - INFO - 🚀 Starting automation...
+2025-08-29 13:13:35,012 - INFO - Starting Deep Live Cam...
+2025-08-29 13:13:42,015 - INFO - Deep Live Cam window found: Deep-Live-Cam 1.8 GitHub Edition
+2025-08-29 13:13:42,016 - INFO - Configuring Deep Live Cam...
+2025-08-29 13:13:44,120 - ERROR - Error clicking Select a face button: 
+2025-08-29 13:13:44,122 - INFO - ❌ Automation failed: Failed to configure Deep Live Cam
+2025-08-29 13:15:08,104 - INFO - 🚀 Starting automation...
+2025-08-29 13:15:08,105 - INFO - Starting Deep Live Cam...
+2025-08-29 13:15:15,114 - INFO - Deep Live Cam window found: Deep-Live-Cam 1.8 GitHub Edition
+2025-08-29 13:15:15,115 - INFO - Configuring Deep Live Cam...
+2025-08-29 13:15:17,325 - INFO - Clicked Select a face button
+2025-08-29 13:15:18,325 - ERROR - Failed to configure Deep Live Cam: 'AutomationWorker' object has no attribute '_select_image_file'
+2025-08-29 13:15:18,326 - INFO - ❌ Automation failed: Failed to configure Deep Live Cam
+2025-08-29 13:16:48,235 - INFO - 🚀 Starting automation...
+2025-08-29 13:16:48,235 - INFO - Starting Deep Live Cam...
+2025-08-29 13:16:55,245 - INFO - Deep Live Cam window found: Deep-Live-Cam 1.8 GitHub Edition
+2025-08-29 13:16:55,245 - INFO - Configuring Deep Live Cam...
+2025-08-29 13:16:57,437 - INFO - Clicked Select a face button
+2025-08-29 13:16:58,438 - ERROR - Failed to configure Deep Live Cam: AutomationWorker._select_image_file() missing 1 required positional argument: 'image_path'
+2025-08-29 13:16:58,439 - INFO - ❌ Automation failed: Failed to configure Deep Live Cam
+2025-08-29 13:22:45,401 - INFO - 🚀 Starting automation...
+2025-08-29 13:22:45,409 - INFO - Starting Deep Live Cam...
+2025-08-29 13:22:52,412 - INFO - Deep Live Cam window found: Deep-Live-Cam 1.8 GitHub Edition
+2025-08-29 13:22:52,413 - INFO - Configuring Deep Live Cam...
+2025-08-29 13:22:54,607 - INFO - Clicked Select a face button
+2025-08-29 13:22:55,607 - INFO - Selecting image file: WhatsApp Image 2025-08-27 at 2.24.49 PM.jpeg
+2025-08-29 13:22:57,461 - ERROR - Error selecting image file: name 'Desktop' is not defined
+Traceback (most recent call last):
+  File "C:\Users\USER\RjFlow\gui\deep_live_cam_tab.py", line 199, in _select_image_file
+    main_win = Desktop(backend="uia").window(title_re=".*Deep-Live-Cam.*")
+               ^^^^^^^
+NameError: name 'Desktop' is not defined
+2025-08-29 13:22:57,463 - INFO - ❌ Automation failed: Failed to configure Deep Live Cam
+2025-08-29 13:24:12,194 - INFO - 🚀 Starting automation...
+2025-08-29 13:24:12,203 - INFO - Starting Deep Live Cam...
+2025-08-29 13:24:19,206 - INFO - Deep Live Cam window found: Deep-Live-Cam 1.8 GitHub Edition
+2025-08-29 13:24:19,206 - INFO - Configuring Deep Live Cam...
+2025-08-29 13:24:21,399 - INFO - Clicked Select a face button
+2025-08-29 13:24:22,400 - INFO - Selecting image file: WhatsApp Image 2025-08-27 at 2.24.49 PM.jpeg
+2025-08-29 13:24:24,249 - ERROR - Error selecting image file: name 'Desktop' is not defined
+Traceback (most recent call last):
+  File "C:\Users\USER\RjFlow\gui\deep_live_cam_tab.py", line 199, in _select_image_file
+    main_win = Desktop(backend="uia").window(title_re=".*select a source image*")
+               ^^^^^^^
+NameError: name 'Desktop' is not defined
+2025-08-29 13:24:24,250 - INFO - ❌ Automation failed: Failed to configure Deep Live Cam
+2025-08-29 13:25:35,451 - INFO - 🚀 Starting automation...
+2025-08-29 13:25:35,452 - INFO - Starting Deep Live Cam...
+2025-08-29 13:25:42,462 - INFO - Deep Live Cam window found: Deep-Live-Cam 1.8 GitHub Edition
+2025-08-29 13:25:42,463 - INFO - Configuring Deep Live Cam...
+2025-08-29 13:25:44,653 - INFO - Clicked Select a face button
+2025-08-29 13:25:45,654 - INFO - Selecting image file: WhatsApp Image 2025-08-27 at 2.24.49 PM.jpeg
+2025-08-29 13:25:47,503 - ERROR - Error selecting image file: name 'Desktop' is not defined
+Traceback (most recent call last):
+  File "C:\Users\USER\RjFlow\gui\deep_live_cam_tab.py", line 199, in _select_image_file
+    main_win = Desktop(backend="uia").window(title_re=".*Deep Live Cam.*")
+               ^^^^^^^
+NameError: name 'Desktop' is not defined
+2025-08-29 13:25:47,504 - INFO - ❌ Automation failed: Failed to configure Deep Live Cam
+2025-08-29 13:27:19,454 - INFO - 🚀 Starting automation...
+2025-08-29 13:27:19,455 - INFO - Starting Deep Live Cam...
+2025-08-29 13:27:26,466 - INFO - Deep Live Cam window found: Deep-Live-Cam 1.8 GitHub Edition
+2025-08-29 13:27:26,466 - INFO - Configuring Deep Live Cam...
+2025-08-29 13:27:28,657 - INFO - Clicked Select a face button
+2025-08-29 13:27:29,657 - INFO - Selecting image file: WhatsApp Image 2025-08-27 at 2.24.49 PM.jpeg
+2025-08-29 13:27:36,099 - INFO - Clicked Live button
+2025-08-29 13:27:36,099 - INFO - Starting OBS...
+2025-08-29 13:27:38,106 - INFO - Automation completed successfully!
+2025-08-29 13:27:38,106 - INFO - ✅ Automation completed successfully!
+2025-08-29 14:10:38,188 - INFO - 🔍 Deep Live Cam dir from settings: E:/Deep-Live-Cam
+2025-08-29 14:10:38,188 - INFO - Checking paths:
+2025-08-29 14:10:38,188 - INFO -   venv_python = E:/Deep-Live-Cam\venv\Scripts\python.exe -> exists: True
+2025-08-29 14:10:38,188 - INFO -   run_py      = E:/Deep-Live-Cam\run.py -> exists: True
+2025-08-29 14:10:38,189 - ERROR - Failed to update UI file labels: 'script_file_label'
+2025-08-29 14:20:02,939 - INFO - 🔍 Deep Live Cam dir: E:/Deep-Live-Cam
+2025-08-29 14:20:02,939 - INFO - Checking paths:
+2025-08-29 14:20:02,939 - INFO -   venv_python = E:/Deep-Live-Cam\venv\Scripts\python.exe -> exists: True
+2025-08-29 14:20:02,939 - INFO -   run_py      = E:/Deep-Live-Cam\run.py -> exists: True
+2025-08-29 14:20:02,940 - INFO - ✅ Deep Live Cam directory is valid.
+2025-08-29 14:20:02,940 - INFO - OBS path: C:/Program Files/obs-studio/bin/64bit/obs64.exe -> exists: True
+2025-08-29 14:20:02,940 - INFO - ✅ OBS executable found.
+2025-08-29 14:23:19,091 - INFO - 🔍 Deep Live Cam dir: E:/Deep-Live-Cam
+2025-08-29 14:23:19,092 - INFO - Checking paths:
+2025-08-29 14:23:19,092 - INFO -   venv_python = E:/Deep-Live-Cam\venv\Scripts\python.exe -> exists: True
+2025-08-29 14:23:19,092 - INFO -   run_py      = E:/Deep-Live-Cam\run.py -> exists: True
+2025-08-29 14:23:19,092 - INFO - ✅ Deep Live Cam directory is valid.
+2025-08-29 14:23:19,093 - INFO - OBS path: C:/Program Files/obs-studio/bin/64bit/obs64.exe -> exists: True
+2025-08-29 14:23:19,093 - INFO - ✅ OBS executable found.
+2025-08-29 14:23:21,785 - ERROR - Failed to display image: 'Image' object has no attribute 'rgb'
+2025-08-29 14:24:23,949 - INFO - 🔍 Deep Live Cam dir: E:/Deep-Live-Cam
+2025-08-29 14:24:23,949 - INFO - Checking paths:
+2025-08-29 14:24:23,949 - INFO -   venv_python = E:/Deep-Live-Cam\venv\Scripts\python.exe -> exists: True
+2025-08-29 14:24:23,949 - INFO -   run_py      = E:/Deep-Live-Cam\run.py -> exists: True
+2025-08-29 14:24:23,949 - INFO - ✅ Deep Live Cam directory is valid.
+2025-08-29 14:24:23,949 - INFO - OBS path: C:/Program Files/obs-studio/bin/64bit/obs64.exe -> exists: True
+2025-08-29 14:24:23,949 - INFO - ✅ OBS executable found.
+2025-08-29 14:24:26,169 - ERROR - Failed to display image: type object 'QImage' has no attribute 'Format_RGB888'
+2025-08-29 14:25:24,906 - INFO - 🔍 Deep Live Cam dir: E:/Deep-Live-Cam
+2025-08-29 14:25:24,906 - INFO - Checking paths:
+2025-08-29 14:25:24,907 - INFO -   venv_python = E:/Deep-Live-Cam\venv\Scripts\python.exe -> exists: True
+2025-08-29 14:25:24,907 - INFO -   run_py      = E:/Deep-Live-Cam\run.py -> exists: True
+2025-08-29 14:25:24,907 - INFO - ✅ Deep Live Cam directory is valid.
+2025-08-29 14:25:24,907 - INFO - OBS path: C:/Program Files/obs-studio/bin/64bit/obs64.exe -> exists: True
+2025-08-29 14:25:24,907 - INFO - ✅ OBS executable found.
+2025-08-29 14:38:29,196 - INFO - 🔍 Deep Live Cam dir: E:/Deep-Live-Cam
+2025-08-29 14:38:29,197 - INFO - Checking paths:
+2025-08-29 14:38:29,197 - INFO -   venv_python = E:/Deep-Live-Cam\venv\Scripts\python.exe -> exists: True
+2025-08-29 14:38:29,197 - INFO -   run_py      = E:/Deep-Live-Cam\run.py -> exists: True
+2025-08-29 14:38:29,197 - INFO - ✅ Deep Live Cam directory is valid.
+2025-08-29 14:38:29,198 - INFO - OBS path: C:/Program Files/obs-studio/bin/64bit/obs64.exe -> exists: True
+2025-08-29 14:38:29,198 - INFO - ✅ OBS executable found.
+2025-08-29 14:39:09,574 - INFO - 🚀 Starting automation...
+2025-08-29 14:39:09,575 - INFO - Starting Deep Live Cam...
+2025-08-29 14:39:16,588 - INFO - Deep Live Cam window found: Deep-Live-Cam 1.8 GitHub Edition
+2025-08-29 14:39:16,589 - INFO - Configuring Deep Live Cam...
+2025-08-29 14:39:18,788 - INFO - Clicked Select a face button
+2025-08-29 14:39:19,789 - INFO - Selecting image file: WhatsApp Image 2025-08-27 at 2.24.49 PM.jpeg
+2025-08-29 14:39:26,296 - INFO - Clicked Live button
+2025-08-29 14:39:26,297 - INFO - Starting OBS...
+2025-08-29 14:39:28,303 - INFO - Automation completed successfully!
+2025-08-29 14:39:28,304 - INFO - ✅ Automation completed successfully!
+2025-08-29 15:22:51,921 - INFO - 🔍 Deep Live Cam dir: E:/Deep-Live-Cam
+2025-08-29 15:22:51,922 - INFO - Checking paths:
+2025-08-29 15:22:51,923 - INFO -   venv_python = E:/Deep-Live-Cam\venv\Scripts\python.exe -> exists: True
+2025-08-29 15:22:51,924 - INFO -   run_py      = E:/Deep-Live-Cam\run.py -> exists: True
+2025-08-29 15:22:51,924 - INFO - ✅ Deep Live Cam directory is valid.
+2025-08-29 15:22:51,925 - INFO - OBS path: C:/Program Files/obs-studio/bin/64bit/obs64.exe -> exists: True
+2025-08-29 15:22:51,926 - INFO - ✅ OBS executable found.
+2025-08-29 15:23:11,274 - INFO - 🚀 Starting automation...
+2025-08-29 15:23:11,285 - INFO - Starting Deep Live Cam...
+2025-08-29 15:23:39,384 - INFO - Deep Live Cam window found: Deep-Live-Cam 1.8 GitHub Edition
+2025-08-29 15:23:39,385 - INFO - Configuring Deep Live Cam...
+2025-08-29 15:23:41,582 - INFO - Clicked Select a face button
+2025-08-29 15:23:42,583 - INFO - Selecting image file: WhatsApp Image 2025-08-27 at 2.24.49 PM.jpeg
+2025-08-29 15:23:49,479 - INFO - Clicked Live button
+2025-08-29 15:23:49,479 - INFO - Starting OBS...
+2025-08-29 15:23:51,486 - INFO - Automation completed successfully!
+2025-08-29 15:23:51,486 - INFO - ✅ Automation completed successfully!
+2025-08-29 15:34:50,277 - INFO - 🔍 Deep Live Cam dir: E:/Deep-Live-Cam
+2025-08-29 15:34:50,277 - INFO - Checking paths:
+2025-08-29 15:34:50,278 - INFO -   venv_python = E:/Deep-Live-Cam\venv\Scripts\python.exe -> exists: True
+2025-08-29 15:34:50,278 - INFO -   run_py      = E:/Deep-Live-Cam\run.py -> exists: True
+2025-08-29 15:34:50,278 - INFO - ✅ Deep Live Cam directory is valid.
+2025-08-29 15:34:50,278 - INFO - OBS path: C:/Program Files/obs-studio/bin/64bit/obs64.exe -> exists: True
+2025-08-29 15:34:50,279 - INFO - ✅ OBS executable found.
+2025-08-29 15:34:57,148 - INFO - Initiating stop all processes
+2025-08-29 15:34:57,149 - INFO - Listing all Python processes for inspection:
+2025-08-29 15:34:58,359 - INFO - PID: 23292, Name: python.exe, Cmdline: ['C:\\Python311\\python.exe', '.\\main.py']
+2025-08-29 15:34:58,384 - INFO - PID: 25568, Name: python.exe, Cmdline: ['C:\\Users\\USER\\RjFlow\\venv\\Scripts\\python.exe', '.\\main.py']
+2025-08-29 15:34:58,398 - INFO - 🛑 Stopped all processes
+2025-08-29 15:34:58,399 - INFO - All processes stopped successfully
+2025-08-29 15:35:15,351 - INFO - 🚀 Starting automation...
+2025-08-29 15:35:15,358 - INFO - Starting Deep Live Cam...
+2025-08-29 15:35:25,367 - INFO - Deep Live Cam window found: Deep-Live-Cam 1.8 GitHub Edition
+2025-08-29 15:35:25,368 - INFO - Configuring Deep Live Cam...
+2025-08-29 15:35:27,578 - INFO - Clicked Select a face button
+2025-08-29 15:35:28,579 - INFO - Selecting image file: WhatsApp Image 2025-08-27 at 2.24.49 PM.jpeg
+2025-08-29 15:35:35,110 - INFO - Clicked Live button
+2025-08-29 15:35:35,111 - INFO - Starting OBS...
+2025-08-29 15:35:37,118 - INFO - Automation completed successfully!
+2025-08-29 15:35:37,118 - INFO - ✅ Automation completed successfully!
+2025-08-29 15:39:14,546 - INFO - 🚀 Starting automation...
+2025-08-29 15:39:14,549 - INFO - Starting Deep Live Cam...
+2025-08-29 15:39:17,550 - INFO - Deep Live Cam window found: Deep-Live-Cam 1.8 GitHub Edition
+2025-08-29 15:39:17,550 - INFO - Configuring Deep Live Cam...
+2025-08-29 15:39:30,408 - INFO - 🔍 Deep Live Cam dir: E:/Deep-Live-Cam
+2025-08-29 15:39:30,409 - INFO - Checking paths:
+2025-08-29 15:39:30,409 - INFO -   venv_python = E:/Deep-Live-Cam\venv\Scripts\python.exe -> exists: True
+2025-08-29 15:39:30,409 - INFO -   run_py      = E:/Deep-Live-Cam\run.py -> exists: True
+2025-08-29 15:39:30,409 - INFO - ✅ Deep Live Cam directory is valid.
+2025-08-29 15:39:30,409 - INFO - OBS path: C:/Program Files/obs-studio/bin/64bit/obs64.exe -> exists: True
+2025-08-29 15:39:30,410 - INFO - ✅ OBS executable found.
+2025-08-29 15:39:36,900 - INFO - 🚀 Starting automation...
+2025-08-29 15:39:36,906 - INFO - Starting Deep Live Cam...
+2025-08-29 15:39:43,912 - INFO - Deep Live Cam window found: Deep-Live-Cam 1.8 GitHub Edition
+2025-08-29 15:39:43,913 - INFO - Configuring Deep Live Cam...
+2025-08-29 15:39:46,106 - INFO - Clicked Select a face button
+2025-08-29 15:39:47,107 - INFO - Selecting image file: WhatsApp Image 2025-08-27 at 2.24.49 PM.jpeg
+2025-08-29 15:39:53,609 - INFO - Clicked Live button
+2025-08-29 15:39:53,609 - INFO - Starting OBS...
+2025-08-29 15:39:55,622 - INFO - Automation completed successfully!
+2025-08-29 15:39:55,623 - INFO - ✅ Automation completed successfully!
+2025-08-29 15:40:06,206 - INFO - Initiating stop all processes
+2025-08-29 15:40:06,206 - INFO - Listing all Python processes for inspection:
+2025-08-29 15:40:07,231 - INFO - PID: 5400, Name: python.exe, Cmdline: ['C:\\Python311\\python.exe', 'E:/Deep-Live-Cam\\run.py', '--execution-provider', 'cuda']
+2025-08-29 15:40:07,678 - INFO - PID: 13624, Name: python.exe, Cmdline: ['C:\\Python311\\python.exe', '.\\main.py']
+2025-08-29 15:40:07,777 - INFO - PID: 15888, Name: python.exe, Cmdline: ['E:/Deep-Live-Cam\\venv\\Scripts\\python.exe', 'E:/Deep-Live-Cam\\run.py', '--execution-provider', 'cuda']
+2025-08-29 15:40:07,922 - INFO - PID: 21892, Name: python.exe, Cmdline: ['C:\\Users\\USER\\RjFlow\\venv\\Scripts\\python.exe', '.\\main.py']
+2025-08-29 15:40:07,951 - INFO - 🛑 Stopped all processes
+2025-08-29 15:40:07,951 - INFO - All processes stopped successfully
+2025-08-29 15:40:20,503 - INFO - Initiating stop all processes
+2025-08-29 15:40:20,503 - INFO - Listing all Python processes for inspection:
+2025-08-29 15:40:21,035 - INFO - PID: 5400, Name: python.exe, Cmdline: ['C:\\Python311\\python.exe', 'E:/Deep-Live-Cam\\run.py', '--execution-provider', 'cuda']
+2025-08-29 15:40:21,279 - INFO - PID: 13624, Name: python.exe, Cmdline: ['C:\\Python311\\python.exe', '.\\main.py']
+2025-08-29 15:40:21,335 - INFO - PID: 15888, Name: python.exe, Cmdline: ['E:/Deep-Live-Cam\\venv\\Scripts\\python.exe', 'E:/Deep-Live-Cam\\run.py', '--execution-provider', 'cuda']
+2025-08-29 15:40:21,399 - INFO - PID: 21892, Name: python.exe, Cmdline: ['C:\\Users\\USER\\RjFlow\\venv\\Scripts\\python.exe', '.\\main.py']
+2025-08-29 15:40:21,416 - INFO - 🛑 Stopped all processes
+2025-08-29 15:40:21,417 - INFO - All processes stopped successfully
+2025-08-29 15:40:21,420 - INFO - Initiating stop all processes
+2025-08-29 15:40:21,421 - INFO - Listing all Python processes for inspection:
+2025-08-29 15:40:21,944 - INFO - PID: 5400, Name: python.exe, Cmdline: ['C:\\Python311\\python.exe', 'E:/Deep-Live-Cam\\run.py', '--execution-provider', 'cuda']
+2025-08-29 15:40:22,191 - INFO - PID: 13624, Name: python.exe, Cmdline: ['C:\\Python311\\python.exe', '.\\main.py']
+2025-08-29 15:40:22,250 - INFO - PID: 15888, Name: python.exe, Cmdline: ['E:/Deep-Live-Cam\\venv\\Scripts\\python.exe', 'E:/Deep-Live-Cam\\run.py', '--execution-provider', 'cuda']
+2025-08-29 15:40:22,330 - INFO - PID: 21892, Name: python.exe, Cmdline: ['C:\\Users\\USER\\RjFlow\\venv\\Scripts\\python.exe', '.\\main.py']
+2025-08-29 15:40:22,345 - INFO - 🛑 Stopped all processes
+2025-08-29 15:40:22,346 - INFO - All processes stopped successfully
+2025-08-29 15:40:22,347 - INFO - Initiating stop all processes
+2025-08-29 15:40:22,347 - INFO - Listing all Python processes for inspection:
+2025-08-29 15:40:22,861 - INFO - PID: 5400, Name: python.exe, Cmdline: ['C:\\Python311\\python.exe', 'E:/Deep-Live-Cam\\run.py', '--execution-provider', 'cuda']
+2025-08-29 15:40:23,099 - INFO - PID: 13624, Name: python.exe, Cmdline: ['C:\\Python311\\python.exe', '.\\main.py']
+2025-08-29 15:40:23,161 - INFO - PID: 15888, Name: python.exe, Cmdline: ['E:/Deep-Live-Cam\\venv\\Scripts\\python.exe', 'E:/Deep-Live-Cam\\run.py', '--execution-provider', 'cuda']
+2025-08-29 15:40:23,225 - INFO - PID: 21892, Name: python.exe, Cmdline: ['C:\\Users\\USER\\RjFlow\\venv\\Scripts\\python.exe', '.\\main.py']
+2025-08-29 15:40:23,240 - INFO - 🛑 Stopped all processes
+2025-08-29 15:40:23,241 - INFO - All processes stopped successfully
+2025-08-29 15:40:23,244 - INFO - Initiating stop all processes
+2025-08-29 15:40:23,244 - INFO - Listing all Python processes for inspection:
+2025-08-29 15:40:23,794 - INFO - PID: 5400, Name: python.exe, Cmdline: ['C:\\Python311\\python.exe', 'E:/Deep-Live-Cam\\run.py', '--execution-provider', 'cuda']
+2025-08-29 15:40:24,039 - INFO - PID: 13624, Name: python.exe, Cmdline: ['C:\\Python311\\python.exe', '.\\main.py']
+2025-08-29 15:40:24,095 - INFO - PID: 15888, Name: python.exe, Cmdline: ['E:/Deep-Live-Cam\\venv\\Scripts\\python.exe', 'E:/Deep-Live-Cam\\run.py', '--execution-provider', 'cuda']
+2025-08-29 15:40:24,158 - INFO - PID: 21892, Name: python.exe, Cmdline: ['C:\\Users\\USER\\RjFlow\\venv\\Scripts\\python.exe', '.\\main.py']
+2025-08-29 15:40:24,175 - INFO - 🛑 Stopped all processes
+2025-08-29 15:40:24,175 - INFO - All processes stopped successfully
+2025-08-29 15:40:24,176 - INFO - Initiating stop all processes
+2025-08-29 15:40:24,177 - INFO - Listing all Python processes for inspection:
+2025-08-29 15:40:24,705 - INFO - PID: 5400, Name: python.exe, Cmdline: ['C:\\Python311\\python.exe', 'E:/Deep-Live-Cam\\run.py', '--execution-provider', 'cuda']
+2025-08-29 15:40:24,949 - INFO - PID: 13624, Name: python.exe, Cmdline: ['C:\\Python311\\python.exe', '.\\main.py']
+2025-08-29 15:40:25,008 - INFO - PID: 15888, Name: python.exe, Cmdline: ['E:/Deep-Live-Cam\\venv\\Scripts\\python.exe', 'E:/Deep-Live-Cam\\run.py', '--execution-provider', 'cuda']
+2025-08-29 15:40:25,079 - INFO - PID: 21892, Name: python.exe, Cmdline: ['C:\\Users\\USER\\RjFlow\\venv\\Scripts\\python.exe', '.\\main.py']
+2025-08-29 15:40:25,096 - INFO - 🛑 Stopped all processes
+2025-08-29 15:40:25,096 - INFO - All processes stopped successfully
+2025-08-29 15:40:25,100 - INFO - Initiating stop all processes
+2025-08-29 15:40:25,101 - INFO - Listing all Python processes for inspection:
+2025-08-29 15:40:25,670 - INFO - PID: 5400, Name: python.exe, Cmdline: ['C:\\Python311\\python.exe', 'E:/Deep-Live-Cam\\run.py', '--execution-provider', 'cuda']
+2025-08-29 15:40:25,907 - INFO - PID: 13624, Name: python.exe, Cmdline: ['C:\\Python311\\python.exe', '.\\main.py']
+2025-08-29 15:40:25,966 - INFO - PID: 15888, Name: python.exe, Cmdline: ['E:/Deep-Live-Cam\\venv\\Scripts\\python.exe', 'E:/Deep-Live-Cam\\run.py', '--execution-provider', 'cuda']
+2025-08-29 15:40:26,031 - INFO - PID: 21892, Name: python.exe, Cmdline: ['C:\\Users\\USER\\RjFlow\\venv\\Scripts\\python.exe', '.\\main.py']
+2025-08-29 15:40:26,046 - INFO - 🛑 Stopped all processes
+2025-08-29 15:40:26,047 - INFO - All processes stopped successfully
+2025-08-29 15:40:26,050 - INFO - Initiating stop all processes
+2025-08-29 15:40:26,050 - INFO - Listing all Python processes for inspection:
+2025-08-29 15:40:26,579 - INFO - PID: 5400, Name: python.exe, Cmdline: ['C:\\Python311\\python.exe', 'E:/Deep-Live-Cam\\run.py', '--execution-provider', 'cuda']
+2025-08-29 15:40:26,825 - INFO - PID: 13624, Name: python.exe, Cmdline: ['C:\\Python311\\python.exe', '.\\main.py']
+2025-08-29 15:40:26,879 - INFO - PID: 15888, Name: python.exe, Cmdline: ['E:/Deep-Live-Cam\\venv\\Scripts\\python.exe', 'E:/Deep-Live-Cam\\run.py', '--execution-provider', 'cuda']
+2025-08-29 15:40:26,944 - INFO - PID: 21892, Name: python.exe, Cmdline: ['C:\\Users\\USER\\RjFlow\\venv\\Scripts\\python.exe', '.\\main.py']
+2025-08-29 15:40:26,964 - INFO - 🛑 Stopped all processes
+2025-08-29 15:40:26,964 - INFO - All processes stopped successfully
+2025-08-29 15:40:27,920 - INFO - Initiating stop all processes
+2025-08-29 15:40:27,920 - INFO - Listing all Python processes for inspection:
+2025-08-29 15:40:28,452 - INFO - PID: 5400, Name: python.exe, Cmdline: ['C:\\Python311\\python.exe', 'E:/Deep-Live-Cam\\run.py', '--execution-provider', 'cuda']
+2025-08-29 15:40:28,687 - INFO - PID: 13624, Name: python.exe, Cmdline: ['C:\\Python311\\python.exe', '.\\main.py']
+2025-08-29 15:40:28,743 - INFO - PID: 15888, Name: python.exe, Cmdline: ['E:/Deep-Live-Cam\\venv\\Scripts\\python.exe', 'E:/Deep-Live-Cam\\run.py', '--execution-provider', 'cuda']
+2025-08-29 15:40:28,810 - INFO - PID: 21892, Name: python.exe, Cmdline: ['C:\\Users\\USER\\RjFlow\\venv\\Scripts\\python.exe', '.\\main.py']
+2025-08-29 15:40:28,826 - INFO - 🛑 Stopped all processes
+2025-08-29 15:40:28,826 - INFO - All processes stopped successfully
+2025-08-29 15:40:28,830 - INFO - Initiating stop all processes
+2025-08-29 15:40:28,830 - INFO - Listing all Python processes for inspection:
+2025-08-29 15:40:29,355 - INFO - PID: 5400, Name: python.exe, Cmdline: ['C:\\Python311\\python.exe', 'E:/Deep-Live-Cam\\run.py', '--execution-provider', 'cuda']
+2025-08-29 15:40:29,601 - INFO - PID: 13624, Name: python.exe, Cmdline: ['C:\\Python311\\python.exe', '.\\main.py']
+2025-08-29 15:40:29,657 - INFO - PID: 15888, Name: python.exe, Cmdline: ['E:/Deep-Live-Cam\\venv\\Scripts\\python.exe', 'E:/Deep-Live-Cam\\run.py', '--execution-provider', 'cuda']
+2025-08-29 15:40:29,725 - INFO - PID: 21892, Name: python.exe, Cmdline: ['C:\\Users\\USER\\RjFlow\\venv\\Scripts\\python.exe', '.\\main.py']
+2025-08-29 15:40:29,748 - INFO - 🛑 Stopped all processes
+2025-08-29 15:40:29,748 - INFO - All processes stopped successfully
+2025-08-29 15:40:29,752 - INFO - Initiating stop all processes
+2025-08-29 15:40:29,752 - INFO - Listing all Python processes for inspection:
+2025-08-29 15:40:30,320 - INFO - PID: 5400, Name: python.exe, Cmdline: ['C:\\Python311\\python.exe', 'E:/Deep-Live-Cam\\run.py', '--execution-provider', 'cuda']
+2025-08-29 15:40:30,556 - INFO - PID: 13624, Name: python.exe, Cmdline: ['C:\\Python311\\python.exe', '.\\main.py']
+2025-08-29 15:40:30,622 - INFO - PID: 15888, Name: python.exe, Cmdline: ['E:/Deep-Live-Cam\\venv\\Scripts\\python.exe', 'E:/Deep-Live-Cam\\run.py', '--execution-provider', 'cuda']
+2025-08-29 15:40:30,688 - INFO - PID: 21892, Name: python.exe, Cmdline: ['C:\\Users\\USER\\RjFlow\\venv\\Scripts\\python.exe', '.\\main.py']
+2025-08-29 15:40:30,706 - INFO - 🛑 Stopped all processes
+2025-08-29 15:40:30,706 - INFO - All processes stopped successfully
+2025-08-29 15:40:30,707 - INFO - Initiating stop all processes
+2025-08-29 15:40:30,708 - INFO - Listing all Python processes for inspection:
+2025-08-29 15:40:31,284 - INFO - PID: 5400, Name: python.exe, Cmdline: ['C:\\Python311\\python.exe', 'E:/Deep-Live-Cam\\run.py', '--execution-provider', 'cuda']
+2025-08-29 15:40:31,675 - INFO - PID: 13624, Name: python.exe, Cmdline: ['C:\\Python311\\python.exe', '.\\main.py']
+2025-08-29 15:40:31,741 - INFO - PID: 15888, Name: python.exe, Cmdline: ['E:/Deep-Live-Cam\\venv\\Scripts\\python.exe', 'E:/Deep-Live-Cam\\run.py', '--execution-provider', 'cuda']
+2025-08-29 15:40:31,830 - INFO - PID: 21892, Name: python.exe, Cmdline: ['C:\\Users\\USER\\RjFlow\\venv\\Scripts\\python.exe', '.\\main.py']
+2025-08-29 15:40:31,852 - INFO - 🛑 Stopped all processes
+2025-08-29 15:40:31,853 - INFO - All processes stopped successfully
+2025-08-29 15:40:31,855 - INFO - Initiating stop all processes
+2025-08-29 15:40:31,856 - INFO - Listing all Python processes for inspection:
+2025-08-29 15:40:32,418 - INFO - PID: 5400, Name: python.exe, Cmdline: ['C:\\Python311\\python.exe', 'E:/Deep-Live-Cam\\run.py', '--execution-provider', 'cuda']
+2025-08-29 15:40:32,703 - INFO - PID: 13624, Name: python.exe, Cmdline: ['C:\\Python311\\python.exe', '.\\main.py']
+2025-08-29 15:40:32,765 - INFO - PID: 15888, Name: python.exe, Cmdline: ['E:/Deep-Live-Cam\\venv\\Scripts\\python.exe', 'E:/Deep-Live-Cam\\run.py', '--execution-provider', 'cuda']
+2025-08-29 15:40:32,833 - INFO - PID: 21892, Name: python.exe, Cmdline: ['C:\\Users\\USER\\RjFlow\\venv\\Scripts\\python.exe', '.\\main.py']
+2025-08-29 15:40:32,852 - INFO - 🛑 Stopped all processes
+2025-08-29 15:40:32,852 - INFO - All processes stopped successfully
+2025-08-29 15:57:59,241 - INFO - 🔍 Deep Live Cam dir: E:/Deep-Live-Cam
+2025-08-29 15:57:59,241 - INFO - Checking paths:
+2025-08-29 15:57:59,242 - INFO -   venv_python = E:/Deep-Live-Cam\venv\Scripts\python.exe -> exists: True
+2025-08-29 15:57:59,242 - INFO -   run_py      = E:/Deep-Live-Cam\run.py -> exists: True
+2025-08-29 15:57:59,242 - INFO - ✅ Deep Live Cam directory is valid.
+2025-08-29 15:57:59,242 - INFO - OBS path: C:/Program Files/obs-studio/bin/64bit/obs64.exe -> exists: True
+2025-08-29 15:57:59,243 - INFO - ✅ OBS executable found.
+2025-08-29 15:58:10,017 - INFO - Initiating stop all processes
+2025-08-29 15:58:10,018 - INFO - Listing all Python processes for inspection:
+2025-08-29 15:58:10,894 - INFO - PID: 5400, Name: python.exe, Cmdline: ['C:\\Python311\\python.exe', 'E:/Deep-Live-Cam\\run.py', '--execution-provider', 'cuda']
+2025-08-29 15:58:11,355 - INFO - PID: 15888, Name: python.exe, Cmdline: ['E:/Deep-Live-Cam\\venv\\Scripts\\python.exe', 'E:/Deep-Live-Cam\\run.py', '--execution-provider', 'cuda']
+2025-08-29 15:58:11,433 - INFO - PID: 20404, Name: python.exe, Cmdline: ['C:\\Python311\\python.exe', '.\\main.py']
+2025-08-29 15:58:11,433 - INFO - PID: 21276, Name: python.exe, Cmdline: ['C:\\Users\\USER\\RjFlow\\venv\\Scripts\\python.exe', '.\\main.py']
+2025-08-29 15:58:11,502 - INFO - 🛑 Stopped all processes
+2025-08-29 15:58:11,503 - INFO - All processes stopped successfully
+2025-08-29 15:58:23,860 - INFO - 🚀 Starting automation...
+2025-08-29 15:58:23,862 - INFO - Starting Deep Live Cam...
+2025-08-29 15:58:23,865 - INFO - Started Deep Live Cam PID 19692
+2025-08-29 15:58:23,866 - INFO - Configuring Deep Live Cam...
+2025-08-29 15:58:25,963 - ERROR - Error clicking Select a face button: 
+2025-08-29 15:58:25,964 - INFO - ❌ Automation failed: Failed to configure Deep Live Cam
+2025-08-29 16:00:19,472 - INFO - 🔍 Deep Live Cam dir: E:/Deep-Live-Cam
+2025-08-29 16:00:19,472 - INFO - Checking paths:
+2025-08-29 16:00:19,472 - INFO -   venv_python = E:/Deep-Live-Cam\venv\Scripts\python.exe -> exists: True
+2025-08-29 16:00:19,473 - INFO -   run_py      = E:/Deep-Live-Cam\run.py -> exists: True
+2025-08-29 16:00:19,473 - INFO - ✅ Deep Live Cam directory is valid.
+2025-08-29 16:00:19,473 - INFO - OBS path: C:/Program Files/obs-studio/bin/64bit/obs64.exe -> exists: True
+2025-08-29 16:00:19,473 - INFO - ✅ OBS executable found.
+2025-08-29 16:00:23,954 - INFO - 🚀 Starting automation...
+2025-08-29 16:00:23,954 - INFO - Starting Deep Live Cam...
+2025-08-29 16:00:30,966 - INFO - Deep Live Cam window found: Deep-Live-Cam 1.8 GitHub Edition
+2025-08-29 16:00:30,966 - INFO - Configuring Deep Live Cam...
+2025-08-29 16:00:33,162 - INFO - Clicked Select a face button
+2025-08-29 16:00:34,163 - INFO - Selecting image file: WhatsApp Image 2025-08-27 at 2.24.49 PM.jpeg
+2025-08-29 16:00:40,665 - INFO - Clicked Live button
+2025-08-29 16:00:40,665 - INFO - Starting OBS...
+2025-08-29 16:00:42,688 - INFO - Automation completed successfully!
+2025-08-29 16:00:42,691 - INFO - ✅ Automation completed successfully!
+2025-08-29 16:01:33,049 - INFO - 🚀 Starting automation...
+2025-08-29 16:01:33,054 - INFO - Starting Deep Live Cam...
+2025-08-29 16:01:40,060 - INFO - Deep Live Cam window found: Deep-Live-Cam 1.8 GitHub Edition
+2025-08-29 16:01:40,061 - INFO - Configuring Deep Live Cam...
+2025-08-29 16:01:42,248 - INFO - Clicked Select a face button
+2025-08-29 16:01:43,249 - INFO - Selecting image file: WhatsApp Image 2025-08-27 at 2.24.49 PM.jpeg
+2025-08-29 16:01:49,743 - INFO - Clicked Live button
+2025-08-29 16:01:49,744 - INFO - Starting OBS...
+2025-08-29 16:01:51,748 - INFO - Automation completed successfully!
+2025-08-29 16:01:51,750 - INFO - ✅ Automation completed successfully!
+2025-08-29 16:02:23,358 - INFO - Initiating stop all processes
+2025-08-29 16:02:23,358 - INFO - Listing all Python processes for inspection:
+2025-08-29 16:02:23,989 - INFO - PID: 4508, Name: python.exe, Cmdline: ['C:\\Users\\USER\\RjFlow\\venv\\Scripts\\python.exe', '.\\main.py']
+2025-08-29 16:02:24,438 - INFO - PID: 8424, Name: python.exe, Cmdline: ['C:\\Python311\\python.exe', '.\\main.py']
+2025-08-29 16:02:24,465 - INFO - PID: 8784, Name: python.exe, Cmdline: ['C:\\Python311\\python.exe', 'E:/Deep-Live-Cam\\run.py', '--execution-provider', 'cuda']
+2025-08-29 16:02:24,828 - INFO - PID: 23932, Name: python.exe, Cmdline: ['E:/Deep-Live-Cam\\venv\\Scripts\\python.exe', 'E:/Deep-Live-Cam\\run.py', '--execution-provider', 'cuda']
+2025-08-29 16:02:24,841 - INFO - 🛑 Stopped all processes
+2025-08-29 16:02:24,841 - INFO - All processes stopped successfully
+2025-08-29 16:13:32,950 - INFO - 🔍 Deep Live Cam dir: E:/Deep-Live-Cam
+2025-08-29 16:13:32,951 - INFO - Checking paths:
+2025-08-29 16:13:32,951 - INFO -   venv_python = E:/Deep-Live-Cam\venv\Scripts\python.exe -> exists: True
+2025-08-29 16:13:32,951 - INFO -   run_py      = E:/Deep-Live-Cam\run.py -> exists: True
+2025-08-29 16:13:32,952 - INFO - ✅ Deep Live Cam directory is valid.
+2025-08-29 16:13:32,952 - INFO - OBS path: C:/Program Files/obs-studio/bin/64bit/obs64.exe -> exists: True
+2025-08-29 16:13:32,952 - INFO - ✅ OBS executable found.
+2025-08-29 16:13:39,093 - INFO - Initiating stop all processes
+2025-08-29 16:13:39,094 - INFO - Listing all Python processes for inspection:
+2025-08-29 16:13:39,675 - INFO - PID: 4508, Name: python.exe, Cmdline: ['C:\\Users\\USER\\RjFlow\\venv\\Scripts\\python.exe', '.\\main.py']
+2025-08-29 16:13:39,897 - INFO - PID: 6112, Name: python.exe, Cmdline: ['C:\\Users\\USER\\RjFlow\\venv\\Scripts\\python.exe', '.\\main.py']
+2025-08-29 16:13:40,067 - INFO - PID: 8424, Name: python.exe, Cmdline: ['C:\\Python311\\python.exe', '.\\main.py']
+2025-08-29 16:13:40,078 - INFO - PID: 8784, Name: python.exe, Cmdline: ['C:\\Python311\\python.exe', 'E:/Deep-Live-Cam\\run.py', '--execution-provider', 'cuda']
+2025-08-29 16:13:40,267 - INFO - PID: 13912, Name: python.exe, Cmdline: ['C:\\Python311\\python.exe', '.\\main.py']
+2025-08-29 16:13:40,429 - INFO - PID: 23932, Name: python.exe, Cmdline: ['E:/Deep-Live-Cam\\venv\\Scripts\\python.exe', 'E:/Deep-Live-Cam\\run.py', '--execution-provider', 'cuda']
+2025-08-29 16:13:40,441 - INFO - 🛑 Stopped all processes
+2025-08-29 16:13:40,442 - INFO - All processes stopped successfully
+2025-08-29 16:13:47,006 - INFO - Initiating stop all processes
+2025-08-29 16:13:47,006 - INFO - Listing all Python processes for inspection:
+2025-08-29 16:13:47,393 - INFO - PID: 4508, Name: python.exe, Cmdline: ['C:\\Users\\USER\\RjFlow\\venv\\Scripts\\python.exe', '.\\main.py']
+2025-08-29 16:13:47,558 - INFO - PID: 6112, Name: python.exe, Cmdline: ['C:\\Users\\USER\\RjFlow\\venv\\Scripts\\python.exe', '.\\main.py']
+2025-08-29 16:13:47,688 - INFO - PID: 8424, Name: python.exe, Cmdline: ['C:\\Python311\\python.exe', '.\\main.py']
+2025-08-29 16:13:47,695 - INFO - PID: 8784, Name: python.exe, Cmdline: ['C:\\Python311\\python.exe', 'E:/Deep-Live-Cam\\run.py', '--execution-provider', 'cuda']
+2025-08-29 16:13:47,826 - INFO - PID: 13912, Name: python.exe, Cmdline: ['C:\\Python311\\python.exe', '.\\main.py']
+2025-08-29 16:13:47,920 - INFO - PID: 23932, Name: python.exe, Cmdline: ['E:/Deep-Live-Cam\\venv\\Scripts\\python.exe', 'E:/Deep-Live-Cam\\run.py', '--execution-provider', 'cuda']
+2025-08-29 16:13:47,929 - INFO - 🛑 Stopped all processes
+2025-08-29 16:13:47,929 - INFO - All processes stopped successfully
+2025-08-29 16:16:31,224 - INFO - 🔍 Deep Live Cam dir: E:/Deep-Live-Cam
+2025-08-29 16:16:31,225 - INFO - Checking paths:
+2025-08-29 16:16:31,225 - INFO -   venv_python = E:/Deep-Live-Cam\venv\Scripts\python.exe -> exists: True
+2025-08-29 16:16:31,225 - INFO -   run_py      = E:/Deep-Live-Cam\run.py -> exists: True
+2025-08-29 16:16:31,225 - INFO - ✅ Deep Live Cam directory is valid.
+2025-08-29 16:16:31,226 - INFO - OBS path: C:/Program Files/obs-studio/bin/64bit/obs64.exe -> exists: True
+2025-08-29 16:16:31,226 - INFO - ✅ OBS executable found.
+2025-08-29 16:16:35,472 - INFO - Initiating stop all processes
+2025-08-29 16:16:35,473 - INFO - Listing all Python processes for inspection:
+2025-08-29 16:16:36,070 - INFO - PID: 4508, Name: python.exe, Cmdline: ['C:\\Users\\USER\\RjFlow\\venv\\Scripts\\python.exe', '.\\main.py']
+2025-08-29 16:16:36,209 - INFO - PID: 4988, Name: python.exe, Cmdline: ['C:\\Python311\\python.exe', '.\\main.py']
+2025-08-29 16:16:36,468 - INFO - PID: 8424, Name: python.exe, Cmdline: ['C:\\Python311\\python.exe', '.\\main.py']
+2025-08-29 16:16:36,480 - INFO - PID: 8784, Name: python.exe, Cmdline: ['C:\\Python311\\python.exe', 'E:/Deep-Live-Cam\\run.py', '--execution-provider', 'cuda']
+2025-08-29 16:16:36,817 - INFO - PID: 23932, Name: python.exe, Cmdline: ['E:/Deep-Live-Cam\\venv\\Scripts\\python.exe', 'E:/Deep-Live-Cam\\run.py', '--execution-provider', 'cuda']
+2025-08-29 16:16:36,832 - INFO - PID: 26544, Name: python.exe, Cmdline: ['C:\\Users\\USER\\RjFlow\\venv\\Scripts\\python.exe', '.\\main.py']
+2025-08-29 16:16:36,833 - INFO - 🛑 Stopped all processes
+2025-08-29 16:16:36,834 - INFO - All processes stopped successfully
+2025-08-29 16:19:57,210 - INFO - 🔍 Deep Live Cam dir: E:/Deep-Live-Cam
+2025-08-29 16:19:57,211 - INFO - Checking paths:
+2025-08-29 16:19:57,211 - INFO -   venv_python = E:/Deep-Live-Cam\venv\Scripts\python.exe -> exists: True
+2025-08-29 16:19:57,211 - INFO -   run_py      = E:/Deep-Live-Cam\run.py -> exists: True
+2025-08-29 16:19:57,211 - INFO - ✅ Deep Live Cam directory is valid.
+2025-08-29 16:19:57,212 - INFO - OBS path: C:/Program Files/obs-studio/bin/64bit/obs64.exe -> exists: True
+2025-08-29 16:19:57,212 - INFO - ✅ OBS executable found.
+2025-08-29 16:20:02,326 - INFO - Initiating stop all processes
+2025-08-29 16:20:02,326 - ERROR - Error stopping processes: 'DeepLiveCamTab' object has no attribute 'stop_all_processes'
+2025-08-29 16:20:02,327 - INFO - ❌ Error stopping processes: 'DeepLiveCamTab' object has no attribute 'stop_all_processes'
+2025-08-29 16:20:10,287 - INFO - Initiating stop all processes
+2025-08-29 16:20:10,287 - ERROR - Error stopping processes: 'DeepLiveCamTab' object has no attribute 'stop_all_processes'
+2025-08-29 16:20:10,288 - INFO - ❌ Error stopping processes: 'DeepLiveCamTab' object has no attribute 'stop_all_processes'
+2025-08-29 16:21:46,627 - INFO - 🔍 Deep Live Cam dir: E:/Deep-Live-Cam
+2025-08-29 16:21:46,628 - INFO - Checking paths:
+2025-08-29 16:21:46,628 - INFO -   venv_python = E:/Deep-Live-Cam\venv\Scripts\python.exe -> exists: True
+2025-08-29 16:21:46,628 - INFO -   run_py      = E:/Deep-Live-Cam\run.py -> exists: True
+2025-08-29 16:21:46,629 - INFO - ✅ Deep Live Cam directory is valid.
+2025-08-29 16:21:46,629 - INFO - OBS path: C:/Program Files/obs-studio/bin/64bit/obs64.exe -> exists: True
+2025-08-29 16:21:46,629 - INFO - ✅ OBS executable found.
+2025-08-29 16:21:50,498 - INFO - Initiating stop all processes
+2025-08-29 16:21:50,498 - INFO - Listing all Python processes for inspection:
+2025-08-29 16:21:50,992 - INFO - PID: 3840, Name: python.exe, Cmdline: ['C:\\Python311\\python.exe', '.\\main.py']
+2025-08-29 16:21:51,724 - INFO - PID: 22744, Name: python.exe, Cmdline: ['C:\\Users\\USER\\RjFlow\\venv\\Scripts\\python.exe', '.\\main.py']
+2025-08-29 16:21:51,757 - INFO - 🛑 Stopped all processes
+2025-08-29 16:21:51,757 - INFO - All processes stopped successfully
+2025-08-29 16:22:50,486 - INFO - 🔍 Deep Live Cam dir: E:/Deep-Live-Cam
+2025-08-29 16:22:50,486 - INFO - Checking paths:
+2025-08-29 16:22:50,486 - INFO -   venv_python = E:/Deep-Live-Cam\venv\Scripts\python.exe -> exists: True
+2025-08-29 16:22:50,486 - INFO -   run_py      = E:/Deep-Live-Cam\run.py -> exists: True
+2025-08-29 16:22:50,487 - INFO - ✅ Deep Live Cam directory is valid.
+2025-08-29 16:22:50,487 - INFO - OBS path: C:/Program Files/obs-studio/bin/64bit/obs64.exe -> exists: True
+2025-08-29 16:22:50,487 - INFO - ✅ OBS executable found.
+2025-08-29 16:22:56,577 - INFO - Initiating stop all processes
+2025-08-29 16:22:56,577 - INFO - Listing all Python processes for inspection:
+2025-08-29 16:22:56,713 - INFO - PID: 1396, Name: python.exe, Cmdline: ['C:\\Python311\\python.exe', '.\\main.py']
+2025-08-29 16:22:57,758 - INFO - PID: 15728, Name: python.exe, Cmdline: ['C:\\Users\\USER\\RjFlow\\venv\\Scripts\\python.exe', '.\\main.py']
+2025-08-29 16:22:57,869 - INFO - 🛑 Stopped all processes
+2025-08-29 16:22:57,870 - INFO - All processes stopped successfully
+2025-08-29 16:24:47,423 - INFO - 🔍 Deep Live Cam dir: E:/Deep-Live-Cam
+2025-08-29 16:24:47,424 - INFO - Checking paths:
+2025-08-29 16:24:47,424 - INFO -   venv_python = E:/Deep-Live-Cam\venv\Scripts\python.exe -> exists: True
+2025-08-29 16:24:47,424 - INFO -   run_py      = E:/Deep-Live-Cam\run.py -> exists: True
+2025-08-29 16:24:47,424 - INFO - ✅ Deep Live Cam directory is valid.
+2025-08-29 16:24:47,424 - INFO - OBS path: C:/Program Files/obs-studio/bin/64bit/obs64.exe -> exists: True
+2025-08-29 16:24:47,425 - INFO - ✅ OBS executable found.
+2025-08-29 16:24:51,813 - INFO - Initiating stop all processes
+2025-08-29 16:24:51,817 - ERROR - Error during process cleanup: 'DeepLiveCamTab' object has no attribute 'script_path'
+2025-08-29 16:24:51,817 - INFO - Listing all Python processes for inspection:
+2025-08-29 16:24:52,622 - INFO - PID: 6688, Name: python.exe, Cmdline: ['C:\\Python311\\python.exe', '.\\main.py']
+2025-08-29 16:24:52,745 - INFO - PID: 8804, Name: python.exe, Cmdline: ['C:\\Users\\USER\\RjFlow\\venv\\Scripts\\python.exe', '.\\main.py']
+2025-08-29 16:24:53,061 - INFO - 🛑 Stopped all processes
+2025-08-29 16:24:53,061 - INFO - All processes stopped successfully
+2025-08-29 16:30:43,486 - INFO - 🔍 Deep Live Cam dir: E:/Deep-Live-Cam
+2025-08-29 16:30:43,487 - INFO - Checking paths:
+2025-08-29 16:30:43,487 - INFO -   venv_python = E:/Deep-Live-Cam\venv\Scripts\python.exe -> exists: True
+2025-08-29 16:30:43,488 - INFO -   run_py      = E:/Deep-Live-Cam\run.py -> exists: True
+2025-08-29 16:30:43,488 - INFO - ✅ Deep Live Cam directory is valid.
+2025-08-29 16:30:43,488 - INFO - OBS path: C:/Program Files/obs-studio/bin/64bit/obs64.exe -> exists: True
+2025-08-29 16:30:43,488 - INFO - ✅ OBS executable found.
+2025-08-29 16:30:48,108 - INFO - Initiating stop all processes
+2025-08-29 16:30:48,112 - ERROR - Error during process cleanup: 'DeepLiveCamTab' object has no attribute 'script_path'
+2025-08-29 16:30:48,112 - INFO - Listing all Python processes for inspection:
+2025-08-29 16:30:48,274 - INFO - PID: 1624, Name: python.exe, Cmdline: ['C:\\Users\\USER\\RjFlow\\venv\\Scripts\\python.exe', '.\\main.py']
+2025-08-29 16:30:49,260 - INFO - PID: 15432, Name: python.exe, Cmdline: ['C:\\Python311\\python.exe', '.\\main.py']
+2025-08-29 16:30:49,360 - INFO - 🛑 Stopped all processes
+2025-08-29 16:30:49,360 - INFO - All processes stopped successfully
+2025-08-29 16:31:18,014 - INFO - 🔍 Deep Live Cam dir: E:/Deep-Live-Cam
+2025-08-29 16:31:18,015 - INFO - Checking paths:
+2025-08-29 16:31:18,015 - INFO -   venv_python = E:/Deep-Live-Cam\venv\Scripts\python.exe -> exists: True
+2025-08-29 16:31:18,015 - INFO -   run_py      = E:/Deep-Live-Cam\run.py -> exists: True
+2025-08-29 16:31:18,015 - INFO - ✅ Deep Live Cam directory is valid.
+2025-08-29 16:31:18,016 - INFO - OBS path: C:/Program Files/obs-studio/bin/64bit/obs64.exe -> exists: True
+2025-08-29 16:31:18,016 - INFO - ✅ OBS executable found.
+2025-08-29 16:31:21,511 - INFO - Initiating stop all processes
+2025-08-29 16:31:21,515 - ERROR - Error during process cleanup: 'DeepLiveCamTab' object has no attribute 'script_path'
+2025-08-29 16:31:21,515 - INFO - Listing all Python processes for inspection:
+2025-08-29 16:31:22,246 - INFO - PID: 5956, Name: python.exe, Cmdline: ['C:\\Python311\\python.exe', '.\\main.py']
+2025-08-29 16:31:22,664 - INFO - PID: 18984, Name: python.exe, Cmdline: ['C:\\Users\\USER\\RjFlow\\venv\\Scripts\\python.exe', '.\\main.py']
+2025-08-29 16:31:22,717 - INFO - 🛑 Stopped all processes
+2025-08-29 16:31:22,717 - INFO - All processes stopped successfully
+2025-08-29 16:34:31,686 - INFO - 🔍 Deep Live Cam dir: E:/Deep-Live-Cam
+2025-08-29 16:34:31,686 - INFO - Checking paths:
+2025-08-29 16:34:31,686 - INFO -   venv_python = E:/Deep-Live-Cam\venv\Scripts\python.exe -> exists: True
+2025-08-29 16:34:31,687 - INFO -   run_py      = E:/Deep-Live-Cam\run.py -> exists: True
+2025-08-29 16:34:31,687 - INFO - ✅ Deep Live Cam directory is valid.
+2025-08-29 16:34:31,687 - INFO - OBS path: C:/Program Files/obs-studio/bin/64bit/obs64.exe -> exists: True
+2025-08-29 16:34:31,687 - INFO - ✅ OBS executable found.
+2025-08-29 16:34:34,891 - INFO - Initiating stop all processes
+2025-08-29 16:34:34,896 - ERROR - Error stopping processes: 'DeepLiveCamTab' object has no attribute 'script_path'
+2025-08-29 16:34:34,896 - INFO - ❌ Error stopping processes: 'DeepLiveCamTab' object has no attribute 'script_path'
+2025-08-29 16:36:47,203 - INFO - 🔍 Deep Live Cam dir: E:/Deep-Live-Cam
+2025-08-29 16:36:47,203 - INFO - Checking paths:
+2025-08-29 16:36:47,204 - INFO -   venv_python = E:/Deep-Live-Cam\venv\Scripts\python.exe -> exists: True
+2025-08-29 16:36:47,204 - INFO -   run_py      = E:/Deep-Live-Cam\run.py -> exists: True
+2025-08-29 16:36:47,204 - INFO - ✅ Deep Live Cam directory is valid.
+2025-08-29 16:36:47,204 - INFO - OBS path: C:/Program Files/obs-studio/bin/64bit/obs64.exe -> exists: True
+2025-08-29 16:36:47,205 - INFO - ✅ OBS executable found.
+2025-08-29 16:36:52,267 - INFO - Initiating stop all processes
+2025-08-29 16:36:53,598 - INFO - Force killing OBS PID 22280
+2025-08-29 16:36:53,715 - INFO - 🛑 Stopped all processes
+2025-08-29 16:36:53,715 - INFO - All processes stopped successfully
+2025-08-29 16:37:04,454 - INFO - 🚀 Starting automation...
+2025-08-29 16:37:04,459 - INFO - Starting Deep Live Cam...
+2025-08-29 16:37:14,469 - INFO - Deep Live Cam window found: Deep-Live-Cam 1.8 GitHub Edition
+2025-08-29 16:37:14,469 - INFO - Configuring Deep Live Cam...
+2025-08-29 16:37:16,670 - INFO - Clicked Select a face button
+2025-08-29 16:37:17,671 - INFO - Selecting image file: WhatsApp Image 2025-08-27 at 2.24.49 PM.jpeg
+2025-08-29 16:37:24,209 - INFO - Clicked Live button
+2025-08-29 16:37:24,210 - INFO - Starting OBS...
+2025-08-29 16:37:26,213 - INFO - Automation completed successfully!
+2025-08-29 16:37:26,213 - INFO - ✅ Automation completed successfully!
+2025-08-29 16:37:59,986 - INFO - Initiating stop all processes
+2025-08-29 16:38:01,033 - INFO - Force killing OBS PID 27604
+2025-08-29 16:38:01,119 - INFO - 🛑 Stopped all processes
+2025-08-29 16:38:01,119 - INFO - All processes stopped successfully
+2025-08-29 16:38:43,383 - INFO - Initiating stop all processes
+2025-08-29 16:38:44,393 - INFO - 🛑 Stopped all processes
+2025-08-29 16:38:44,394 - INFO - All processes stopped successfully
+2025-08-29 16:55:35,739 - INFO - 🔍 Deep Live Cam dir: E:/Deep-Live-Cam
+2025-08-29 16:55:35,740 - INFO - Checking paths:
+2025-08-29 16:55:35,740 - INFO -   venv_python = E:/Deep-Live-Cam\venv\Scripts\python.exe -> exists: True
+2025-08-29 16:55:35,740 - INFO -   run_py      = E:/Deep-Live-Cam\run.py -> exists: True
+2025-08-29 16:55:35,740 - INFO - ✅ Deep Live Cam directory is valid.
+2025-08-29 16:55:35,741 - INFO - OBS path: C:/Program Files/obs-studio/bin/64bit/obs64.exe -> exists: True
+2025-08-29 16:55:35,741 - INFO - ✅ OBS executable found.
+2025-08-29 16:56:18,328 - INFO - Initiating stop all processes
+2025-08-29 16:56:18,328 - INFO - Connecting to 'Preview' window...
+2025-08-29 16:56:23,081 - INFO - Setting focus to 'Preview' window...
+2025-08-29 16:56:28,923 - INFO - Closing 'Preview' window using dlg.close()...
+2025-08-29 16:56:33,697 - INFO - ✅ 'Preview' window closed successfully
+2025-08-29 16:56:33,697 - INFO - Connecting to 'Deep Live Cam' window...
+2025-08-29 16:56:34,076 - WARNING - ⚠️ 'Deep Live Cam' window not found
+2025-08-29 16:56:35,437 - INFO - Force killing OBS PID 17420
+2025-08-29 16:56:35,659 - INFO - 🛑 Stopped all processes
+2025-08-29 16:56:35,660 - INFO - All processes stopped successfully
+2025-08-29 16:57:05,005 - INFO - Initiating stop all processes
+2025-08-29 16:57:05,921 - INFO - 🛑 Stopped all processes
+2025-08-29 16:57:05,921 - INFO - All processes stopped successfully
+2025-08-29 16:57:37,656 - INFO - Initiating stop all processes
+2025-08-29 16:57:38,476 - INFO - 🛑 Stopped all processes
+2025-08-29 16:57:38,476 - INFO - All processes stopped successfully
+2025-08-29 16:57:41,424 - INFO - Initiating stop all processes
+2025-08-29 16:57:42,271 - INFO - 🛑 Stopped all processes
+2025-08-29 16:57:42,271 - INFO - All processes stopped successfully
+2025-08-29 16:57:45,345 - INFO - Initiating stop all processes
+2025-08-29 16:57:46,211 - INFO - 🛑 Stopped all processes
+2025-08-29 16:57:46,211 - INFO - All processes stopped successfully
+2025-08-29 16:57:46,213 - INFO - Initiating stop all processes
+2025-08-29 16:57:47,114 - INFO - 🛑 Stopped all processes
+2025-08-29 16:57:47,115 - INFO - All processes stopped successfully
+2025-08-29 16:57:58,582 - INFO - 🔍 Deep Live Cam dir: E:/Deep-Live-Cam
+2025-08-29 16:57:58,582 - INFO - Checking paths:
+2025-08-29 16:57:58,583 - INFO -   venv_python = E:/Deep-Live-Cam\venv\Scripts\python.exe -> exists: True
+2025-08-29 16:57:58,583 - INFO -   run_py      = E:/Deep-Live-Cam\run.py -> exists: True
+2025-08-29 16:57:58,583 - INFO - ✅ Deep Live Cam directory is valid.
+2025-08-29 16:57:58,583 - INFO - OBS path: C:/Program Files/obs-studio/bin/64bit/obs64.exe -> exists: True
+2025-08-29 16:57:58,584 - INFO - ✅ OBS executable found.
+2025-08-29 16:58:02,931 - INFO - Initiating stop all processes
+2025-08-29 16:58:02,931 - INFO - Connecting to 'Preview' window...
+2025-08-29 16:58:02,990 - WARNING - ⚠️ 'Preview' window not found
+2025-08-29 16:58:02,990 - INFO - Connecting to 'Deep Live Cam' window...
+2025-08-29 16:58:03,066 - WARNING - ⚠️ 'Deep Live Cam' window not found
+2025-08-29 16:58:04,344 - INFO - 🛑 Stopped all processes
+2025-08-29 16:58:04,345 - INFO - All processes stopped successfully
+2025-08-29 16:58:08,220 - INFO - Initiating stop all processes
+2025-08-29 16:58:08,221 - INFO - Connecting to 'Preview' window...
+2025-08-29 16:58:08,277 - WARNING - ⚠️ 'Preview' window not found
+2025-08-29 16:58:08,277 - INFO - Connecting to 'Deep Live Cam' window...
+2025-08-29 16:58:08,335 - WARNING - ⚠️ 'Deep Live Cam' window not found
+2025-08-29 16:58:09,175 - INFO - 🛑 Stopped all processes
+2025-08-29 16:58:09,175 - INFO - All processes stopped successfully
+2025-08-29 16:59:17,978 - INFO - 🔍 Deep Live Cam dir: E:/Deep-Live-Cam
+2025-08-29 16:59:17,978 - INFO - Checking paths:
+2025-08-29 16:59:17,978 - INFO -   venv_python = E:/Deep-Live-Cam\venv\Scripts\python.exe -> exists: True
+2025-08-29 16:59:17,979 - INFO -   run_py      = E:/Deep-Live-Cam\run.py -> exists: True
+2025-08-29 16:59:17,979 - INFO - ✅ Deep Live Cam directory is valid.
+2025-08-29 16:59:17,979 - INFO - OBS path: C:/Program Files/obs-studio/bin/64bit/obs64.exe -> exists: True
+2025-08-29 16:59:17,979 - INFO - ✅ OBS executable found.
+2025-08-29 16:59:22,707 - INFO - Initiating stop all processes
+2025-08-29 16:59:22,708 - INFO - Connecting to 'Preview' window...
+2025-08-29 16:59:22,771 - WARNING - ⚠️ 'Preview' window not found
+2025-08-29 16:59:22,771 - INFO - Connecting to 'Deep Live Cam' window...
+2025-08-29 16:59:22,833 - INFO - Setting focus to 'Deep Live Cam' window...
+2025-08-29 16:59:22,908 - INFO - Closing 'Deep Live Cam' window using dlg.close()...
+2025-08-29 16:59:22,970 - INFO - ✅ 'Deep Live Cam' window closed successfully
+2025-08-29 16:59:24,363 - INFO - 🛑 Stopped all processes
+2025-08-29 16:59:24,363 - INFO - All processes stopped successfully
+2025-08-29 16:59:43,888 - INFO - 🚀 Starting automation...
+2025-08-29 16:59:43,893 - INFO - Starting Deep Live Cam...
+2025-08-29 17:00:12,959 - INFO - Deep Live Cam window found: Deep-Live-Cam 1.8 GitHub Edition
+2025-08-29 17:00:12,960 - INFO - Configuring Deep Live Cam...
+2025-08-29 17:00:15,158 - INFO - Clicked Select a face button
+2025-08-29 17:00:16,158 - INFO - Selecting image file: WhatsApp Image 2025-08-27 at 2.24.49 PM.jpeg
+2025-08-29 17:00:22,648 - INFO - Clicked Live button
+2025-08-29 17:00:22,649 - INFO - Starting OBS...
+2025-08-29 17:00:24,652 - INFO - Automation completed successfully!
+2025-08-29 17:00:24,653 - INFO - ✅ Automation completed successfully!
+2025-08-29 17:01:01,270 - INFO - Initiating stop all processes
+2025-08-29 17:01:01,270 - INFO - Connecting to 'Preview' window...
+2025-08-29 17:01:05,792 - INFO - Setting focus to 'Preview' window...
+2025-08-29 17:01:11,018 - INFO - Closing 'Preview' window using dlg.close()...
+2025-08-29 17:01:15,152 - INFO - ✅ 'Preview' window closed successfully
+2025-08-29 17:01:15,153 - INFO - Connecting to 'Deep Live Cam' window...
+2025-08-29 17:01:15,515 - INFO - Setting focus to 'Deep Live Cam' window...
+2025-08-29 17:01:15,576 - INFO - Closing 'Deep Live Cam' window using dlg.close()...
+2025-08-29 17:01:15,658 - INFO - ✅ 'Deep Live Cam' window closed successfully
+2025-08-29 17:01:16,644 - INFO - Force killing OBS PID 19356
+2025-08-29 17:01:16,927 - INFO - 🛑 Stopped all processes
+2025-08-29 17:01:16,927 - INFO - All processes stopped successfully
+2025-08-29 17:02:47,781 - INFO - 🔍 Deep Live Cam dir: E:/Deep-Live-Cam
+2025-08-29 17:02:47,782 - INFO - Checking paths:
+2025-08-29 17:02:47,782 - INFO -   venv_python = E:/Deep-Live-Cam\venv\Scripts\python.exe -> exists: True
+2025-08-29 17:02:47,782 - INFO -   run_py      = E:/Deep-Live-Cam\run.py -> exists: True
+2025-08-29 17:02:47,782 - INFO - ✅ Deep Live Cam directory is valid.
+2025-08-29 17:02:47,783 - INFO - OBS path: C:/Program Files/obs-studio/bin/64bit/obs64.exe -> exists: True
+2025-08-29 17:02:47,783 - INFO - ✅ OBS executable found.
+2025-08-29 17:03:14,801 - INFO - 🚀 Starting automation...
+2025-08-29 17:03:14,812 - INFO - Starting Deep Live Cam...
+2025-08-29 17:03:21,821 - INFO - Deep Live Cam window found: Deep-Live-Cam 1.8 GitHub Edition
+2025-08-29 17:03:21,822 - INFO - Configuring Deep Live Cam...
+2025-08-29 17:03:24,008 - INFO - Clicked Select a face button
+2025-08-29 17:03:25,009 - INFO - Selecting image file: WhatsApp Image 2025-08-27 at 2.24.49 PM.jpeg
+2025-08-29 17:03:31,517 - INFO - Clicked Live button
+2025-08-29 17:03:31,518 - INFO - Starting OBS...
+2025-08-29 17:03:33,521 - INFO - Automation completed successfully!
+2025-08-29 17:03:33,522 - INFO - ✅ Automation completed successfully!
+2025-08-29 17:59:39,876 - INFO - 🔍 Deep Live Cam dir: E:/Deep-Live-Cam
+2025-08-29 17:59:39,877 - INFO - Checking paths:
+2025-08-29 17:59:39,877 - INFO -   venv_python = E:/Deep-Live-Cam\venv\Scripts\python.exe -> exists: True
+2025-08-29 17:59:39,877 - INFO -   run_py      = E:/Deep-Live-Cam\run.py -> exists: True
+2025-08-29 17:59:39,878 - INFO - ✅ Deep Live Cam directory is valid.
+2025-08-29 17:59:39,878 - INFO - OBS path: C:/Program Files/obs-studio/bin/64bit/obs64.exe -> exists: True
+2025-08-29 17:59:39,878 - INFO - ✅ OBS executable found.
+2025-08-29 18:00:16,364 - INFO - 🚀 Starting automation...
+2025-08-29 18:00:16,377 - INFO - Starting Deep Live Cam...
+2025-08-29 18:00:50,378 - ERROR - Deep Live Cam window not found within timeout
+2025-08-29 18:00:50,379 - INFO - ❌ Automation failed: Failed to start Deep Live Cam
+2025-08-29 18:02:26,721 - INFO - 🚀 Starting automation...
+2025-08-29 18:02:26,733 - INFO - Starting Deep Live Cam...
+2025-08-29 18:02:33,734 - INFO - Deep Live Cam window found: Deep-Live-Cam 1.8 GitHub Edition
+2025-08-29 18:02:33,734 - INFO - Configuring Deep Live Cam...
+2025-08-29 18:02:36,001 - INFO - Clicked Select a face button
+2025-08-29 18:02:37,002 - INFO - Selecting image file: WhatsApp Image 2025-08-27 at 2.24.49 PM.jpeg
+2025-08-29 18:02:43,975 - INFO - Clicked Live button
+2025-08-29 18:02:43,977 - INFO - Starting OBS...
+2025-08-29 18:02:46,096 - INFO - Automation completed successfully!
+2025-08-29 18:02:46,096 - INFO - ✅ Automation completed successfully!
+2025-08-29 18:04:03,021 - INFO - Initiating stop all processes
+2025-08-29 18:04:03,021 - INFO - Connecting to 'Preview' window...
+2025-08-29 18:04:07,728 - INFO - Setting focus to 'Preview' window...
+2025-08-29 18:04:13,822 - INFO - Closing 'Preview' window using dlg.close()...
+2025-08-29 18:04:18,678 - INFO - ✅ 'Preview' window closed successfully
+2025-08-29 18:04:18,678 - INFO - Connecting to 'Deep Live Cam' window...
+2025-08-29 18:04:19,226 - INFO - Setting focus to 'Deep Live Cam' window...
+2025-08-29 18:04:19,319 - INFO - Closing 'Deep Live Cam' window using dlg.close()...
+2025-08-29 18:04:19,434 - INFO - ✅ 'Deep Live Cam' window closed successfully
+2025-08-29 18:04:21,742 - INFO - Force killing OBS PID 25712
+2025-08-29 18:04:21,957 - INFO - 🛑 Stopped all processes
+2025-08-29 18:04:21,958 - INFO - All processes stopped successfully
+2025-08-29 18:13:33,291 - INFO - 🔍 Deep Live Cam dir: E:/Deep-Live-Cam
+2025-08-29 18:13:33,292 - INFO - Checking paths:
+2025-08-29 18:13:33,292 - INFO -   venv_python = E:/Deep-Live-Cam\venv\Scripts\python.exe -> exists: True
+2025-08-29 18:13:33,292 - INFO -   run_py      = E:/Deep-Live-Cam\run.py -> exists: True
+2025-08-29 18:13:33,293 - INFO - ✅ Deep Live Cam directory is valid.
+2025-08-29 18:13:33,293 - INFO - OBS path: C:/Program Files/obs-studio/bin/64bit/obs64.exe -> exists: True
+2025-08-29 18:13:33,293 - INFO - ✅ OBS executable found.
+2025-09-02 22:58:45,324 - INFO - 🔍 Deep Live Cam dir: E:/Deep-Live-Cam
+2025-09-02 22:58:45,324 - INFO - Checking paths:
+2025-09-02 22:58:48,442 - INFO -  venv_python = E:/Deep-Live-Cam\venv\Scripts\python.exe -> exists: True
+2025-09-02 22:58:48,454 - INFO -  run_py = E:/Deep-Live-Cam\run.py -> exists: True
+2025-09-02 22:58:48,454 - INFO - ✅ Deep Live Cam directory is valid.
+2025-09-02 22:58:48,454 - INFO - OBS path: C:/Program Files/obs-studio/bin/64bit/obs64.exe -> exists: True
+2025-09-02 22:58:48,454 - INFO - ✅ OBS executable found.
+2025-09-02 22:58:51,720 - WARNING - [Calendar] Error processing event: 'start'
+2025-09-04 12:57:31,917 - WARNING - [Calendar] Error processing event: 'start'
+2025-09-05 02:00:53,451 - WARNING - [Calendar] Error processing event: 'start'
+2025-09-05 02:11:33,895 - WARNING - [Calendar] Error processing event: 'start'
+2025-09-05 02:12:20,254 - WARNING - [Calendar] Error processing event: 'start'
+2025-09-05 02:16:32,761 - WARNING - [Calendar] Error processing event: 'start'
+2025-09-05 02:16:48,870 - WARNING - [Calendar] Error processing event: 'start'
