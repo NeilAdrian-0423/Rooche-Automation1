@@ -219,9 +219,9 @@ class ManualTab(QWidget):
             QMessageBox.critical(self, "Error", f"File not found: {local_file_path}")
             return
         
-        # Update config with hardcoded values
-        self.config_manager.set("whisper_model", "small")
-        self.config_manager.set("whisper_device", "cuda")
+        # Update config with values from config_manager
+        self.config_manager.set("whisper_model", self.config_manager.get("whisper_model", "small"))
+        self.config_manager.set("whisper_device", self.config_manager.get("whisper_device", "cuda"))
         self.config_manager.save()
         
         # Disable button during processing
