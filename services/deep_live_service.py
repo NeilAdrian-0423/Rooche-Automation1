@@ -29,18 +29,78 @@ class DeepLiveService:
         finally:
             stream.close()
 
-    def _wait_for_ready(self, timeout=15):
-        """Wait until Deep Live prints a 'ready' signal or timeout expires."""
-        start = time.time()
-        while time.time() - start < timeout:
-            try:
-                line = self.log_queue.get(timeout=0.5)
-                if "ready" in line.lower():  # customize based on Deep Live output
-                    logger.info("Deep Live reported ready")
-                    return True
-            except queue.Empty:
-                continue
+    def _wait_for_ready(self, timeout=120, retries=2):
+        """Wait until Deep Live fully initializes and starts processing."""
+        init_phrases = [
+            "DEEP_LIVE_CAM_READY",
+            "Camera initialized",
+            "Virtual camera started",
+            "Frame processors loaded",
+            "Source image loaded and face detected successfully"
+        ]
+        active_phrases = [
+            "Starting main processing loop",
+            "Face detection failed for target or source"
+        ]
+        error_phrases = [
+            "error: unrecognized arguments",  # For argparse errors
+            "Fatal error in Deep Live Cam",  # From main() exception
+            "Failed to open camera",  # Camera initialization failure
+            "Failed to load source image",  # Source image loading failure
+            "Failed to capture frame from camera"  # Frame capture failure
+        ]
+
+        for attempt in range(1, retries + 1):
+            logger.info(f"Deep Live readiness check attempt {attempt}/{retries}")
+
+            start = time.time()
+            init_detected = False
+
+            # Phase 1: Wait for initialization
+            while time.time() - start < timeout:
+                try:
+                    line = self.log_queue.get(timeout=10)
+                    # Check for error messages first
+                    if any(p in line.lower() for p in error_phrases) or "ERROR" in line:
+                        logger.error(f"Error detected in Deep Live logs: {line.strip()}")
+                        self.stop_deeplive()
+                        raise RuntimeError(f"Deep Live failed with error: {line.strip()}")
+                    # Check for initialization phrases
+                    if any(p in line for p in init_phrases):
+                        logger.info(f"Deep Live init detected: {line.strip()}")
+                        init_detected = True
+                        break
+                except queue.Empty:
+                    continue
+
+            if not init_detected:
+                logger.warning("Initialization phrases not detected in time")
+                continue  # Retry next attempt
+
+            # Phase 2: After init, wait up to 30s for active processing
+            active_start = time.time()
+            while time.time() - active_start < 30:
+                try:
+                    line = self.log_queue.get(timeout=5)
+                    # Check for error messages
+                    if any(p in line.lower() for p in error_phrases) or "ERROR" in line:
+                        logger.error(f"Error detected in Deep Live logs: {line.strip()}")
+                        self.stop_deeplive()
+                        raise RuntimeError(f"Deep Live failed with error: {line.strip()}")
+                    # Check for active processing phrases
+                    if any(p in line for p in active_phrases):
+                        logger.info(f"Deep Live active processing detected: {line.strip()}")
+                        return True
+                except queue.Empty:
+                    continue
+
+            logger.warning("Active processing not detected after initialization")
+
+        # If all retries fail
+        logger.error("Deep Live failed to signal readiness after retries, stopping process")
+        self.stop_deeplive()
         raise TimeoutError("Deep Live did not signal readiness in time")
+
 
     def start_deeplive(self, deeplive_dir: str, image_path: str, settings: dict):
         """Start Deep Live Cam CLI with dynamic args."""
@@ -106,8 +166,11 @@ class DeepLiveService:
             threading.Thread(target=self._reader_thread, args=(self.process.stdout,), daemon=True).start()
             threading.Thread(target=self._reader_thread, args=(self.process.stderr, logging.ERROR), daemon=True).start()
 
-            # Wait until ready or fail fast
-            self._wait_for_ready(timeout=settings.get("startup_timeout", 15))
+            # Give the process a moment to start up
+            time.sleep(2)
+
+            # Wait until ready or fail fast - using startup_delay from settings
+            self._wait_for_ready(timeout=settings.get("startup_delay", 15))
 
             if self.process.poll() is not None:
                 raise RuntimeError(f"Deep Live exited early with code {self.process.returncode}")
@@ -116,6 +179,13 @@ class DeepLiveService:
 
         except Exception as e:
             logger.error(f"Failed to start Deep Live: {e}")
+            # Clean up if process was created but failed
+            if self.process and self.process.poll() is None:
+                try:
+                    self.process.terminate()
+                except:
+                    pass
+            self.process = None
             raise
 
     def stop_deeplive(self):
@@ -145,3 +215,7 @@ class DeepLiveService:
             logger.error(f"Error stopping Deep Live: {e}")
         finally:
             self.process = None
+
+    def is_running(self):
+        """Check if Deep Live process is currently running."""
+        return self.process is not None and self.process.poll() is None

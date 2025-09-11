@@ -1,7 +1,8 @@
 """Helper utility functions."""
-
 import re
 import logging
+from PyQt6.QtWidgets import QLabel, QLineEdit, QPushButton
+from PyQt6.QtGui import QFont
 
 def extract_notion_url(description_text):
     """Extract Notion page ID from p= parameter or URL structure."""
@@ -71,3 +72,33 @@ def extract_notion_url(description_text):
     
     logging.warning(f"[URL Extract] No valid Notion page ID found in: {clean_text}")
     return clean_text.strip()
+
+def create_labeled_input(layout, label_text, default_text="", read_only=False, max_width=None):
+    layout.addWidget(QLabel(label_text))
+    input_field = QLineEdit()
+    input_field.setFont(QFont("Arial", 9))
+    input_field.setText(default_text)
+    if read_only:
+        input_field.setReadOnly(True)
+    if max_width:
+        input_field.setMaximumWidth(max_width)
+    layout.addWidget(input_field)
+    return input_field
+
+def create_styled_button(text, bg_color, hover_color, disabled_style=None):
+    button = QPushButton(text)
+    style = f"""
+        QPushButton {{
+            background-color: {bg_color};
+            color: white;
+            font-size: 10pt;
+            padding: 5px;
+        }}
+        QPushButton:hover {{
+            background-color: {hover_color};
+        }}
+    """
+    if disabled_style:
+        style += f"QPushButton:disabled {{ {disabled_style}; }}"
+    button.setStyleSheet(style)
+    return button

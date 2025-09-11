@@ -33,8 +33,14 @@ class MainApplication(QMainWindow):
 
         # Initialize services
         self.config_manager = ConfigManager()
+        try:
+            self.config_manager.load()  # 👈 make sure config values are loaded from file
+            logger.info("Config loaded successfully")
+        except Exception as e:
+            logger.error(f"Failed to load config: {e}")
+
         self.audio_processor = AudioProcessor(self.config_manager)
-        self.calendar_service = CalendarService()
+        self.calendar_service = CalendarService()  # change to CalendarService(self.config_manager) if it requires config
         self.sharex_service = ShareXService(self.config_manager)
         self.webhook_service = WebhookService()
         self.monitoring_service = MonitoringService(
@@ -53,6 +59,19 @@ class MainApplication(QMainWindow):
         # Create UI
         self.create_ui()
 
+        # Debug: log loaded config values
+        logger.info("Loaded config values at startup: %s", {
+            "mouth_mask": self.config_manager.get("mouth_mask"),
+            "many_faces": self.config_manager.get("many_faces"),
+            "camera_index": self.config_manager.get("camera_index"),
+            "deeplive_dir": self.config_manager.get("deeplive_dir"),
+            "deeplive_models_dir": self.config_manager.get("deeplive_models_dir"),
+            "history_path": self.config_manager.get("history_path"),
+            "sharex_exe_path": self.config_manager.get("sharex_exe_path"),
+            "wait_timer_minutes": self.config_manager.get("wait_timer_minutes"),
+            "startup_delay": self.config_manager.get("startup_delay"),
+        })
+
     def create_ui(self):
         """Create the main UI."""
         # Central widget + layout
@@ -68,7 +87,6 @@ class MainApplication(QMainWindow):
         # Calendar tab
         self.calendar_tab = CalendarTab(
             self.tab_widget,
-            self.config_manager,
             self.calendar_service,
             self.sharex_service,
             self.webhook_service,
