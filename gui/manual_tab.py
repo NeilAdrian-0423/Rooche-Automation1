@@ -1,5 +1,3 @@
-"""Manual file selection tab."""
-
 import os
 from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QLabel, QPushButton,
@@ -189,8 +187,16 @@ class ManualTab(QWidget):
             return
         
         # Get form data from calendar tab
-        notion_url = self.calendar_tab.ui_elements['notion_entry'].text().strip()
-        description = self.calendar_tab.ui_elements['description_entry'].text().strip()
+        try:
+            notion_url = self.calendar_tab.ui_elements['notion_entry'].text().strip()
+            description = self.calendar_tab.ui_elements['description_entry'].text().strip()
+        except KeyError as e:
+            QMessageBox.critical(
+                self, 
+                "Error", 
+                f"Missing required field in Calendar Events tab: {str(e)}. Please ensure all fields are properly set up."
+            )
+            return
         
         if not notion_url or not description:
             QMessageBox.critical(
@@ -213,15 +219,9 @@ class ManualTab(QWidget):
             QMessageBox.critical(self, "Error", f"File not found: {local_file_path}")
             return
         
-        # Update config
-        self.config_manager.set(
-            "whisper_model",
-            self.calendar_tab.ui_elements['model_entry'].text().strip()
-        )
-        self.config_manager.set(
-            "whisper_device",
-            self.calendar_tab.ui_elements['device_entry'].text().strip()
-        )
+        # Update config with values from config_manager
+        self.config_manager.set("whisper_model", self.config_manager.get("whisper_model", "small"))
+        self.config_manager.set("whisper_device", self.config_manager.get("whisper_device", "cuda"))
         self.config_manager.save()
         
         # Disable button during processing
