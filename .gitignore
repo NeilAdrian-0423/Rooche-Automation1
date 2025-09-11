@@ -2,3 +2,4 @@ venv
 logs.txt
 config.json
 .env
+*__pycache__
