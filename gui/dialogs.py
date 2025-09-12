@@ -1,7 +1,12 @@
-from PyQt6.QtWidgets import QDialog, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit, QPushButton, QGroupBox, QFileDialog, QMessageBox, QDialogButtonBox
+from PyQt6.QtWidgets import (
+    QDialog, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit, QPushButton,
+    QGroupBox, QFileDialog, QMessageBox, QDialogButtonBox, QComboBox
+)
 from PyQt6.QtGui import QFont
 from utils.helpers import create_labeled_input, create_styled_button
 import os
+
+
 class PassFailDialog(QDialog):
     def __init__(self, parent):
         super().__init__(parent)
@@ -36,6 +41,7 @@ class PassFailDialog(QDialog):
             return self.result, self.reason_entry.text().strip()
         return None, None
 
+
 class WaitForUploadDialog(QDialog):
     def __init__(self, parent):
         super().__init__(parent)
@@ -67,6 +73,7 @@ class WaitForUploadDialog(QDialog):
         self.exec()
         return self.result
 
+
 class SettingsDialog(QDialog):
     def __init__(self, parent, config_manager):
         super().__init__(parent)
@@ -82,28 +89,65 @@ class SettingsDialog(QDialog):
         config_group.setStyleSheet("QGroupBox { font-weight: bold; }")
         config_layout = QVBoxLayout()
         
-        self.ui_elements['timer_entry'] = create_labeled_input(config_layout, "Time Limit (minutes):", str(self.config_manager.get("wait_timer_minutes", 60)), max_width=100)
-        self.ui_elements['model_entry'] = create_labeled_input(config_layout, "Whisper Model:", self.config_manager.get("whisper_model", "base"), max_width=100)
-        self.ui_elements['device_entry'] = create_labeled_input(config_layout, "Device:", self.config_manager.get("whisper_device", "cpu"), max_width=100)
-        self.ui_elements['deeplive_dir_entry'] = create_labeled_input(config_layout, "DeepLive Directory:", self.config_manager.get("deeplive_dir", ""), max_width=200)
-        self.ui_elements['select_deeplive_dir_button'] = create_styled_button("📁 Select DeepLive Directory", "#666666", "#555555")
+        # Timer input
+        self.ui_elements['timer_entry'] = create_labeled_input(
+            config_layout, "Time Limit (minutes):",
+            str(self.config_manager.get("wait_timer_minutes", 60)), max_width=100
+        )
+        
+        # Whisper model input
+        self.ui_elements['model_entry'] = create_labeled_input(
+            config_layout, "Whisper Model:",
+            self.config_manager.get("whisper_model", "base"), max_width=100
+        )
+        
+        # Whisper device as dropdown (cpu/cuda only)
+        device_label = QLabel("Device:")
+        self.ui_elements['device_entry'] = QComboBox()
+        self.ui_elements['device_entry'].addItems(["cpu", "cuda"])
+        current_device = self.config_manager.get("whisper_device", "cpu")
+        if current_device not in ("cpu", "cuda"):
+            current_device = "cpu"  # fallback
+        self.ui_elements['device_entry'].setCurrentText(current_device)
+        
+        config_layout.addWidget(device_label)
+        config_layout.addWidget(self.ui_elements['device_entry'])
+        
+        # DeepLive directories
+        self.ui_elements['deeplive_dir_entry'] = create_labeled_input(
+            config_layout, "DeepLive Directory:",
+            self.config_manager.get("deeplive_dir", ""), max_width=200
+        )
+        self.ui_elements['select_deeplive_dir_button'] = create_styled_button(
+            "📁 Select DeepLive Directory", "#666666", "#555555"
+        )
         self.ui_elements['select_deeplive_dir_button'].clicked.connect(self.select_deeplive_dir)
         config_layout.addWidget(self.ui_elements['select_deeplive_dir_button'])
         
-        self.ui_elements['deeplive_models_dir_entry'] = create_labeled_input(config_layout, "Deep Live Models Directory:", self.config_manager.get("deeplive_models_dir", ""), max_width=200)
-        self.ui_elements['select_deeplive_models_dir_button'] = create_styled_button("📁 Select Deep Live Models Directory", "#666666", "#555555")
+        self.ui_elements['deeplive_models_dir_entry'] = create_labeled_input(
+            config_layout, "Deep Live Models Directory:",
+            self.config_manager.get("deeplive_models_dir", ""), max_width=200
+        )
+        self.ui_elements['select_deeplive_models_dir_button'] = create_styled_button(
+            "📁 Select Deep Live Models Directory", "#666666", "#555555"
+        )
         self.ui_elements['select_deeplive_models_dir_button'].clicked.connect(self.select_deeplive_models_dir)
         config_layout.addWidget(self.ui_elements['select_deeplive_models_dir_button'])
         
         config_group.setLayout(config_layout)
         layout.addWidget(config_group)
         
+        # File selectors
         file_buttons_row = QHBoxLayout()
-        self.ui_elements['select_history_button'] = create_styled_button("📁 Select ShareX History", "#666666", "#555555")
+        self.ui_elements['select_history_button'] = create_styled_button(
+            "📁 Select ShareX History", "#666666", "#555555"
+        )
         self.ui_elements['select_history_button'].clicked.connect(self.select_history_file)
         file_buttons_row.addWidget(self.ui_elements['select_history_button'])
         
-        self.ui_elements['select_sharex_button'] = create_styled_button("🎯 Select ShareX.exe", "#FF9800", "#F57C00")
+        self.ui_elements['select_sharex_button'] = create_styled_button(
+            "🎯 Select ShareX.exe", "#FF9800", "#F57C00"
+        )
         self.ui_elements['select_sharex_button'].clicked.connect(self.select_sharex_exe)
         file_buttons_row.addWidget(self.ui_elements['select_sharex_button'])
         
@@ -154,11 +198,16 @@ class SettingsDialog(QDialog):
             if deeplive_models_dir and not os.path.isdir(deeplive_models_dir):
                 QMessageBox.critical(self, "Error", "Deep Live Models directory does not exist.")
                 return
+            
+            device = self.ui_elements['device_entry'].currentText().strip().lower()
+            if device not in ("cpu", "cuda"):
+                QMessageBox.critical(self, "Error", "Device must be either 'cpu' or 'cuda'.")
+                return
                 
             self.config_manager.update({
                 "wait_timer_minutes": wait_minutes,
                 "whisper_model": self.ui_elements['model_entry'].text().strip(),
-                "whisper_device": self.ui_elements['device_entry'].text().strip(),
+                "whisper_device": device,
                 "deeplive_dir": deeplive_dir,
                 "deeplive_models_dir": deeplive_models_dir
             })
