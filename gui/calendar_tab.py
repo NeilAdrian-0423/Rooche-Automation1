@@ -6,14 +6,14 @@ import json
 from datetime import datetime, timezone
 from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton,
-    QListWidget, QListWidgetItem, QGroupBox, QScrollArea, QCheckBox, QComboBox, QMessageBox
+    QListWidget, QListWidgetItem, QGroupBox, QScrollArea, QCheckBox, QComboBox, QMessageBox, QMenu, QPushButton
 )
 from PyQt6.QtCore import Qt, QTimer, QUrl
 from PyQt6.QtGui import QFont, QDesktopServices
 from .dialogs import SettingsDialog, PassFailDialog, WaitForUploadDialog
 from .threads import CalendarRefreshThread, DeepLiveWorker
 from utils.helpers import extract_notion_url, create_labeled_input, create_styled_button
-from core.config import ConfigManager  # Import ConfigManager from core.py
+from core.config import ConfigManager 
 
 class CalendarTab(QWidget):
     def __init__(self, parent, calendar_service, sharex_service, 
@@ -178,12 +178,27 @@ class CalendarTab(QWidget):
         self.sharex_exe_label.setStyleSheet("color: gray;")
         parent_layout.addWidget(self.sharex_exe_label)
 
+    def manual_transcribe_clicked(self):
+        self.status_label.setText("📝 Manual Transcribe + n8n clicked (not implemented yet)")
+
     def create_control_buttons(self, parent_layout):
         control_row = QHBoxLayout()
-        self.ui_elements['submit_button'] = create_styled_button("🚀 Start Monitoring + Recording", "#4CAF50", "#45a049", disabled_style="#cccccc; color: white")
-        self.ui_elements['submit_button'].clicked.connect(self.handle_submission)
-        self.ui_elements['submit_button'].setEnabled(False)
-        control_row.addWidget(self.ui_elements['submit_button'])
+        self.ui_elements['submit_menu_button'] = QPushButton("🚀 Start Options")
+        self.ui_elements['submit_menu_button'].setStyleSheet(
+            "background-color: #4CAF50; color: white; border-radius: 6px; padding: 6px; font-weight: bold;"
+        )
+        self.ui_elements['submit_menu_button'].setEnabled(False)
+
+        menu = QMenu(self)
+
+        start_automation_action = menu.addAction("Start Automation")
+        start_automation_action.triggered.connect(self.handle_submission)
+
+        manual_transcribe_action = menu.addAction("Manual Transcribe + n8n")
+        manual_transcribe_action.triggered.connect(self.manual_transcribe_clicked)
+
+        self.ui_elements['submit_menu_button'].setMenu(menu)
+        control_row.addWidget(self.ui_elements['submit_menu_button'])
         
         self.ui_elements['reset_button'] = create_styled_button("🛑 Stop All", "#FF5722", "#E64A19", disabled_style="#cccccc; color: white")
         self.ui_elements['reset_button'].clicked.connect(self.stop_monitoring)
@@ -348,7 +363,7 @@ class CalendarTab(QWidget):
             self.config_manager.get("deeplive_models_dir") and os.path.isdir(self.config_manager.get("deeplive_models_dir")),
             os.getenv("WEBHOOK_URL", "").strip()
         ]
-        self.ui_elements['submit_button'].setEnabled(all(conditions))
+        self.ui_elements['submit_menu_button'].setEnabled(all(conditions))
 
     def launch_sharex_and_start_recording(self):
         sharex_path = self.config_manager.get("sharex_exe_path")
@@ -357,7 +372,7 @@ class CalendarTab(QWidget):
             return False
         try:
             self.status_label.setText("🚀 Launching ShareX...")
-            subprocess.Popen([sharex_path], shell=True)
+            subprocess.Popen(f'"{sharex_path}"')
             time.sleep(3)
             self.status_label.setText("🎥 Starting screen recording...")
             success = self.sharex_service.trigger_recording()
@@ -370,29 +385,46 @@ class CalendarTab(QWidget):
     def handle_submission(self):
         notion_url = self.ui_elements['notion_entry'].text().strip()
         description = self.ui_elements['description_entry'].text().strip()
-        if not all([notion_url, description, self.config_manager.get("history_path"), self.config_manager.get("sharex_exe_path"), os.getenv("WEBHOOK_URL", "").strip()]):
-            QMessageBox.critical(self, "Error", "Missing required fields or configuration!")
+        history_path = self.config_manager.get("history_path")
+        sharex_path = self.config_manager.get("sharex_exe_path")
+        webhook_url = os.getenv("WEBHOOK_URL", "").strip()
+
+        if not notion_url:
+            QMessageBox.critical(self, "Error", "Missing Notion URL")
             return
-        
+        if not description:
+            QMessageBox.critical(self, "Error", "Missing description")
+            return
+        if not history_path or not os.path.exists(history_path):
+            QMessageBox.critical(self, "Error", "Invalid or missing ShareX history path")
+            return
+        if not sharex_path or not os.path.exists(sharex_path):
+            QMessageBox.critical(self, "Error", "Invalid or missing ShareX executable path")
+            return
+        if not webhook_url:
+            QMessageBox.critical(self, "Error", "WEBHOOK_URL environment variable is missing")
+            return
+
         submit_time = datetime.now(timezone.utc).astimezone()
         wait_minutes = self.config_manager.get("wait_timer_minutes", 60)
         self.enable_ui_elements(False)
-        
+
         if not self.launch_sharex_and_start_recording():
             self.enable_ui_elements(True)
             return
-        
+
         self.current_monitoring_params = {
-            'submit_time': submit_time,
-            'wait_minutes': wait_minutes,
-            'notion_url': notion_url,
-            'description': description,
-            'on_transcription_complete': lambda transcription, drive_url, local_file_path: self.status_label.setText("✅ Transcription sent!"),
-            'status_update': self.status_label.setText,
-            'on_monitoring_complete': lambda: (self.enable_ui_elements(True), setattr(self, 'current_monitoring_params', None))
-        }
-        
+                'after_dt': submit_time,
+                'timeout_minutes': wait_minutes,
+                'notion_url': notion_url,
+                'description': description,
+                'callback': lambda transcription, drive_url, local_file_path: self.status_label.setText("✅ Transcription sent!"),
+                'status_callback': self.status_label.setText,
+                'completion_callback': lambda: (self.enable_ui_elements(True), setattr(self, 'current_monitoring_params', None))
+            }
+
         self.monitoring_service.start_monitoring(**self.current_monitoring_params)
+
         self.status_label.setText(f"🚀 Monitoring started with {wait_minutes} minute limit...")
 
     def stop_monitoring(self):
@@ -425,7 +457,7 @@ class CalendarTab(QWidget):
             self.status_label.setText("❌ Pass/fail submission cancelled")
 
     def enable_ui_elements(self, enable=True):
-        for key in ['notion_entry', 'description_entry', 'submit_button', 'pass_fail_button', 'identity_entry']:
+        for key in ['notion_entry', 'description_entry', 'submit_menu_button', 'pass_fail_button', 'identity_entry']:
             self.ui_elements[key].setEnabled(enable)
         self.ui_elements['reset_button'].setEnabled(not enable)
         self.settings_button.setEnabled(enable)
