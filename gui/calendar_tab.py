@@ -70,7 +70,12 @@ class CalendarTab(QWidget):
         
         self.ui_elements['meeting_link_entry'] = create_labeled_input(form_layout, "Meeting Link:", read_only=True)
         self.ui_elements['meeting_link_entry'].setCursor(Qt.CursorShape.PointingHandCursor)
-        self.ui_elements['meeting_link_entry'].mousePressEvent = lambda e: QDesktopServices.openUrl(QUrl(self.ui_elements['meeting_link_entry'].text())) or e.accept()
+        def open_meeting_link(event):
+            QDesktopServices.openUrl(QUrl(self.ui_elements['meeting_link_entry'].text()))
+            event.accept()
+
+        self.ui_elements['meeting_link_entry'].mousePressEvent = open_meeting_link
+
         
         self.ui_elements['identity_entry'] = create_labeled_input(form_layout, "Identity:", read_only=True)
         
