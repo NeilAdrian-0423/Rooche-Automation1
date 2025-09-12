@@ -19,7 +19,7 @@ from services.monitoring_service import MonitoringService
 from services.deep_live_service import DeepLiveService
 
 from gui.calendar_tab import CalendarTab
-from gui.manual_tab import ManualTab
+# from gui.manual_process_dialog import ManualTab
 # from gui.deep_live_cam_tab import DeepLiveCamTab
 
 # Load environment variables
@@ -96,14 +96,14 @@ class MainApplication(QMainWindow):
         )
 
         # Manual tab
-        self.manual_tab = ManualTab(
-            self.tab_widget,
-            self.config_manager,
-            self.sharex_service,
-            self.audio_processor,
-            self.webhook_service,
-            self.calendar_tab
-        )
+        # self.manual_tab = ManualTab(
+        #     self.tab_widget,
+        #     self.config_manager,
+        #     self.sharex_service,
+        #     self.audio_processor,
+        #     self.webhook_service,
+        #     self.calendar_tab
+        # )
 
         # Optional Deep Live Cam tab (if you want later)
         # self.deep_live_cam_tab = DeepLiveCamTab(
@@ -113,7 +113,7 @@ class MainApplication(QMainWindow):
 
         # Add tabs
         self.tab_widget.addTab(self.calendar_tab, "📅 Calendar Events")
-        self.tab_widget.addTab(self.manual_tab, "📁 Manual Files")
+        # self.tab_widget.addTab(self.manual_tab, "📁 Manual Files")
         # self.tab_widget.addTab(self.deep_live_cam_tab, "🎥 Deep Live Cam")
 
     def closeEvent(self, event):

@@ -2,7 +2,7 @@
 
 from .main_window import MainApplication
 from .calendar_tab import CalendarTab
-from .manual_tab import ManualTab
+# from .manual_process_dialog import ManualTab
 from .dialogs import PassFailDialog
 
 __all__ = [

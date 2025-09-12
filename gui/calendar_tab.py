@@ -14,6 +14,8 @@ from .dialogs import SettingsDialog, PassFailDialog, WaitForUploadDialog
 from .threads import CalendarRefreshThread, DeepLiveWorker
 from utils.helpers import extract_notion_url, create_labeled_input, create_styled_button
 from core.config import ConfigManager 
+from .manual_process_dialog import ManualDialog
+
 
 class CalendarTab(QWidget):
     def __init__(self, parent, calendar_service, sharex_service, 
@@ -179,7 +181,17 @@ class CalendarTab(QWidget):
         parent_layout.addWidget(self.sharex_exe_label)
 
     def manual_transcribe_clicked(self):
-        self.status_label.setText("📝 Manual Transcribe + n8n clicked (not implemented yet)")
+        """Open the Manual Transcribe dialog."""
+        dialog = ManualDialog(
+            parent=self,
+            config_manager=self.config_manager,
+            sharex_service=self.sharex_service,
+            audio_processor=self.audio_processor,
+            webhook_service=self.webhook_service,
+            calendar_tab=self
+        )
+        dialog.exec()
+
 
     def create_control_buttons(self, parent_layout):
         control_row = QHBoxLayout()
