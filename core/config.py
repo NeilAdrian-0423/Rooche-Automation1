@@ -8,7 +8,7 @@ from threading import Lock
 from .constants import CONFIG_FILE, DEFAULT_CONFIG
 
 VALID_WHISPER_MODELS = {"tiny", "base", "small", "medium", "large"}
-VALID_WHISPER_DEVICES = {"cpu", "cuda", "auto"}
+VALID_WHISPER_DEVICES = {"cpu", "cuda"}
 
 class ConfigManager:
     def __init__(self):
